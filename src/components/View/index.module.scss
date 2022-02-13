@@ -1,0 +1,23 @@
+.view {
+  flex-grow: 1;
+}
+.row-group {
+  display: flex;
+  flex-direction: row;
+  .group-item:first-child {
+    border-right: 1px solid #ccc;
+  }
+}
+.column-group {
+  display: flex;
+  flex-direction: column;
+  .group-item:first-child {
+    border-bottom: 1px solid #ccc;
+  }
+}
+.group-item {
+  display: flex;
+}
+.group-item:last-child {
+  flex-grow: 1;
+}

@@ -1,0 +1,20 @@
+.menu {
+  display: flex;
+}
+.menu-node {
+  padding: 0 8px;
+  line-height: 32px;
+  height: 32px;
+  &-name {
+    display: flex;
+    justify-content: center;
+  }
+  overflow: hidden;
+  cursor: pointer;
+}
+.menu-node:hover {
+  background-color: #eee;
+}
+.menu-node-visible {
+  overflow: visible;
+}
