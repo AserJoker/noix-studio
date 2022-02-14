@@ -1,8 +1,8 @@
-import { IEventEmitter, IView } from "@/types";
+import { IEventEmitter, IView, IViewEventInfo } from "@/types";
 import { ITreeEventInfo } from "./tree";
 
 export const useView = (
-  emitter: IEventEmitter<ITreeEventInfo<IView>>,
+  emitter: IEventEmitter<ITreeEventInfo<IView> & IViewEventInfo>,
   getTreeNode: (key: string) => IView | undefined,
   getParentNode: (key: string) => IView | undefined
 ) => {
@@ -10,23 +10,25 @@ export const useView = (
     key: string,
     children0Key = `${key}.children[0]`,
     children1Key = `${key}.children[1]`,
-    split: string | undefined = undefined
+    split: string | undefined = undefined,
+    reverse = false
   ) => {
     const node = getTreeNode(key);
     if (node && node.type === "window") {
-      const { windowKey } = node;
+      const { classname } = node;
       emitter.emit("update", {
         key,
         type: "group",
         direction: "row",
         split,
+        reverse,
       });
       emitter.emit(
         "insert",
         {
           key: children0Key,
           type: "window",
-          windowKey: windowKey,
+          classname: classname,
         },
         key
       );
@@ -35,7 +37,7 @@ export const useView = (
         {
           key: children1Key,
           type: "window",
-          windowKey: windowKey,
+          classname: classname,
         },
         key,
         children0Key
@@ -46,23 +48,25 @@ export const useView = (
     key: string,
     children0Key = `${key}.children[0]`,
     children1Key = `${key}.children[1]`,
-    split: string | undefined = undefined
+    split: string | undefined = undefined,
+    reverse = false
   ) => {
     const node = getTreeNode(key);
     if (node && node.type === "window") {
-      const { windowKey } = node;
+      const { classname } = node;
       emitter.emit("update", {
         key,
         type: "group",
         direction: "column",
         split,
+        reverse,
       });
       emitter.emit(
         "insert",
         {
           key: children0Key,
           type: "window",
-          windowKey: windowKey,
+          classname: classname,
         },
         key
       );
@@ -71,7 +75,7 @@ export const useView = (
         {
           key: children1Key,
           type: "window",
-          windowKey: windowKey,
+          classname: classname,
         },
         key,
         children0Key
@@ -93,5 +97,8 @@ export const useView = (
         key: parent.key,
       });
   };
+  emitter.on("split", splitView);
+  emitter.on("vsplit", vsplitView);
+  emitter.on("dispose", disposeView);
   return { splitView, vsplitView, disposeView };
 };

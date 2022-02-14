@@ -2,14 +2,14 @@ import { IWindow } from "@/types/IWindow";
 
 const windows: Record<string, IWindow<unknown[]>> = {};
 export const useWindow = () => {
-  const renderWindow = (key: string, ...args: unknown[]) => {
-    return windows[key]?.content?.(...args);
+  const renderWindow = (classname: string, ...args: unknown[]) => {
+    return windows[classname]?.content?.(...args);
   };
-  const createWindow = <T extends unknown[]>(win: IWindow<T>) => {
-    windows[win.key] = win as IWindow;
+  const createWindow = <T extends unknown[] = unknown[]>(win: IWindow<T>) => {
+    windows[win.classname] = win as IWindow;
   };
-  const getWindow = (key: string) => {
-    return windows[key];
+  const getWindow = (classname: string) => {
+    return windows[classname];
   };
   return { windows, renderWindow, createWindow, getWindow };
 };

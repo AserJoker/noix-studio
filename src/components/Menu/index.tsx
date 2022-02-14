@@ -3,26 +3,12 @@ import { NDropdown } from "naive-ui";
 import style from "./index.module.scss";
 import { useMenu } from "@/service/menu";
 import { useEventEmitter } from "@/service";
-import { IMenuEventInfo, IMenuNode } from "@/types";
+import { IMenuEventInfo } from "@/types";
 import { menus, TOKEN_MENU_EMITTER } from "@/const";
 export default defineComponent({
   setup() {
-    const emitter = useEventEmitter<IMenuEventInfo>(TOKEN_MENU_EMITTER);
-    const { menus: options } = useMenu(emitter);
-    const resolveMenuNode = (
-      node: IMenuNode,
-      parentKey?: string,
-      lastKey?: string
-    ) => {
-      emitter.emit("insert", node, parentKey, lastKey);
-      node.children &&
-        node.children.forEach((item, index) => {
-          resolveMenuNode(item, node.key, node.children?.[index - 1]?.key);
-        });
-    };
-    menus.forEach((item) => {
-      resolveMenuNode(item);
-    });
+    const $menu = useEventEmitter<IMenuEventInfo>(TOKEN_MENU_EMITTER);
+    const { menus: options } = useMenu($menu, menus);
     return () => (
       <div class={style.menu}>
         {options.map((node) => (
@@ -36,7 +22,7 @@ export default defineComponent({
             }}
             animated={false}
             onSelect={(key) => {
-              emitter.emit("select", key);
+              $menu.emit("select", key);
             }}
           >
             <div key={node.key} class={style["menu-node"]}>

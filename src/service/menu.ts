@@ -1,11 +1,12 @@
-import { IMenuEventEmitter, IMenuNode } from "@/types";
+import { IMenuEventEmitter } from "@/types";
 import { DropdownOption } from "naive-ui";
 import { reactive } from "vue";
 
 export const useMenu = (
-  emitter: IMenuEventEmitter
+  emitter: IMenuEventEmitter,
+  defaultValue: DropdownOption[] = []
 ): { menus: DropdownOption[] } => {
-  const menus = reactive<DropdownOption[]>([]) as DropdownOption[];
+  const menus = reactive<DropdownOption[]>(defaultValue) as DropdownOption[];
   const menuList: Record<string, () => DropdownOption> = {};
   const parentInfo: Record<string, string> = {};
   const deleteItem = (key: string) => {
@@ -29,24 +30,15 @@ export const useMenu = (
     item.children && item.children.forEach((c) => clearChildren(c));
   };
   const insertItem = (
-    node: IMenuNode,
+    node: DropdownOption,
     parentKey?: string,
     lastKey?: string
   ) => {
-    const menuitem = node.label
-      ? {
-          ...node,
-          children: undefined,
-        }
-      : {
-          key: node.key,
-          type: "divider",
-        };
     if (!parentKey) {
-      menus.push(menuitem);
+      menus.push(node);
       if (node.label) {
         const item = menus[menus.length - 1];
-        menuList[node.key] = () => {
+        menuList[node.key as string] = () => {
           return item as DropdownOption;
         };
       }
@@ -63,25 +55,25 @@ export const useMenu = (
         if (index === -1) {
           throw new Error(`cannot find menu node id#${lastKey}`);
         }
-        parent.children.splice(index + 1, 0, menuitem);
+        parent.children.splice(index + 1, 0, node);
         if (node.label) {
           const item = parent.children[index + 1];
-          menuList[node.key] = () => {
+          menuList[node.key as string] = () => {
             return item;
           };
         }
       } else {
         if (!parent.children) {
-          parent.children = [menuitem as DropdownOption];
+          parent.children = [node as DropdownOption];
         } else {
-          parent.children.unshift(menuitem as DropdownOption);
+          parent.children.unshift(node as DropdownOption);
         }
         const item = parent.children[0];
-        menuList[node.key] = () => {
+        menuList[node.key as string] = () => {
           return item;
         };
       }
-      parentInfo[node.key] = parentKey;
+      parentInfo[node.key as string] = parentKey;
     }
   };
   const enableItem = (key: string) => {
@@ -96,8 +88,8 @@ export const useMenu = (
       item.disabled = true;
     }
   };
-  const updateItem = (node: IMenuNode) => {
-    const item = menuList[node.key]?.();
+  const updateItem = (node: DropdownOption) => {
+    const item = menuList[node.key as string]?.();
     if (!item) {
       throw new Error(`cannot find menu node id#${node.key}`);
     }
@@ -110,7 +102,7 @@ export const useMenu = (
           key: node.key,
           type: "divider",
         };
-    const parent = menuList[parentInfo[node.key]]?.();
+    const parent = menuList[parentInfo[node.key as string]]?.();
     if (parent && parent.children) {
       const index = parent.children.findIndex((item) => item.key === node.key);
       if (index !== -1) {

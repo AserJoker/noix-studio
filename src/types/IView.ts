@@ -7,9 +7,10 @@ interface IGroupView extends IBaseView {
   direction: "row" | "column";
   children: [IView, IView];
   split: string;
+  reverse?: boolean;
 }
 interface IWindowView extends IBaseView {
   type: "window";
-  windowKey: string;
+  classname: string[];
 }
 export type IView = IGroupView | IWindowView;

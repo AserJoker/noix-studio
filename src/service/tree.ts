@@ -5,6 +5,7 @@ export type ITreeEventInfo<T> = {
   delete: (key: string) => void;
   update: (node: T) => void;
   insert: (node: T, parentKey: string, lastKey?: string) => void;
+  upgrade: (node: Partial<T> & { key: string }) => void;
 };
 export const useTree = <T extends { children?: T[]; key: string }>(
   emitter: IEventEmitter<ITreeEventInfo<T>>,
@@ -88,9 +89,19 @@ export const useTree = <T extends { children?: T[]; key: string }>(
       });
     }
   };
+  const upgradeItem = (node: Partial<T> & { key: string }) => {
+    const item = treeList[node.key]?.();
+    if (!item) {
+      throw new Error(`cannot find tree node id#${node.key}`);
+    }
+    Object.keys(node).forEach((key) => {
+      item[key as keyof T] = node[key as keyof T] as T[keyof T];
+    });
+  };
   emitter.on("insert", insertItem);
   emitter.on("delete", deleteItem);
   emitter.on("update", updateItem);
+  emitter.on("upgrade", upgradeItem);
   const getTreeNode = (key: string) => {
     return treeList[key]?.();
   };

@@ -1,6 +1,6 @@
-import { IMenuNode } from "@/types";
+import { DropdownOption } from "naive-ui";
 
-const menus: IMenuNode[] = [
+const menus: DropdownOption[] = [
   {
     label: "项目",
     key: "project",
@@ -15,6 +15,7 @@ const menus: IMenuNode[] = [
       },
       {
         key: "di",
+        type: "divider",
       },
       {
         label: "构建项目",
@@ -23,15 +24,9 @@ const menus: IMenuNode[] = [
       {
         label: "预览项目",
         key: "preview-project",
-        children: [
-          {
-            label: "测试",
-            key: "test",
-          },
-        ],
       },
     ],
   },
 ];
-const TOKEN_MENU_EMITTER = Symbol("menu");
+const TOKEN_MENU_EMITTER = "token.emitter.menu";
 export { menus, TOKEN_MENU_EMITTER };
