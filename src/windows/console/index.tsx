@@ -1,6 +1,6 @@
 import { TOKEN_CONSOLE_EMITTER } from "@/const";
 import { useEventEmitter, useWindow } from "@/service";
-import { useOutput } from "@/service/output";
+import { useConsole } from "@/service/console";
 import { IConsoleEventInfo } from "@/types";
 import { defineComponent, nextTick, ref, watch } from "vue";
 import style from "./index.module.scss";
@@ -10,7 +10,7 @@ const ConsoleWindow = defineComponent({
     const el = ref<HTMLDivElement | null>();
     const eli = ref<HTMLInputElement | null>();
     const $console = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
-    const { messages } = useOutput($console);
+    const { messages } = useConsole($console);
     watch(messages, () => {
       nextTick(() => {
         if (el.value) {

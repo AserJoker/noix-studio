@@ -6,4 +6,4 @@ export * from "./IView";
 export * from "./IMessage";
 export * from "./IFooter";
 export * from "./IViewEventEmitter";
-export * from "./IOutputEventEmitter";
+export * from "./IConsoleEventEmitter";

@@ -3,12 +3,10 @@ import style from "./index.module.scss";
 import Header from "@/components/Header";
 import Content from "@/components/Content";
 import Footer from "../Footer";
-import { installWelcomeWindow } from "@/windows/welcome";
-import { installConsoleWindow } from "@/windows/console";
+import system from "@/modules/system";
 export default defineComponent({
   setup() {
-    installWelcomeWindow();
-    installConsoleWindow();
+    system.install();
     return () => (
       <div class={style.application}>
         <div class={style.header}>
