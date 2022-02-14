@@ -73,7 +73,7 @@ const View = defineComponent({
       if (props.node.type === "window") {
         const win = getWindow(currentWindow.value);
         return (
-          <div class={`${style.view}`} tabindex="0" ref={currentWindow.value}>
+          <div class={`${style.view}`} ref={currentWindow.value}>
             <div class={style.switch}>
               <div class={style.title}>
                 <div class={style["title-text"]} key={currentWindow.value}>

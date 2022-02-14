@@ -1,6 +1,7 @@
 import { IEventEmitter } from "./IEventEmitter";
 
-export type IOutputEventInfo = {
+export type IConsoleEventInfo = {
   output: (type: string, msg: string) => void;
+  input: (message: string) => void;
 };
-export type IOutputEventEmitter = IEventEmitter<IOutputEventInfo>;
+export type IConsoleEventEmitter = IEventEmitter<IConsoleEventInfo>;

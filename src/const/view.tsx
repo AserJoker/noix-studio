@@ -1,5 +1,5 @@
 import { IView } from "@/types";
-import { TOKEN_OUTPUT_WINDOW } from "@/windows/output";
+import { TOKEN_CONSOLE_WINDOW } from "@/windows/console";
 import { TOKEN_WELCOME_WINDOW } from "@/windows/welcome";
 
 export const view: IView = {
@@ -22,8 +22,8 @@ export const view: IView = {
       children: [
         {
           type: "window",
-          key: "output",
-          classname: [TOKEN_OUTPUT_WINDOW],
+          key: "console",
+          classname: [TOKEN_CONSOLE_WINDOW],
         },
         {
           type: "window",

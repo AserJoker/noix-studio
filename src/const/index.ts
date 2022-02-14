@@ -1,3 +1,4 @@
 export * from "./menu";
 export * from "./view";
 export * from "./footer";
+export const TOKEN_CONSOLE_EMITTER = "token.emitter.console";

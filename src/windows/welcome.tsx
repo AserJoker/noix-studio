@@ -1,4 +1,7 @@
-import { useWindow } from "@/service";
+import { TOKEN_CONSOLE_EMITTER } from "@/const";
+import { useEventEmitter, useWindow } from "@/service";
+import { IConsoleEventInfo } from "@/types";
+import { NButton } from "naive-ui";
 import { defineComponent } from "vue";
 const WelcomeWindow = defineComponent({
   props: {
@@ -8,10 +11,18 @@ const WelcomeWindow = defineComponent({
     },
   },
   setup() {
+    const $output = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
     return () => {
       return (
         <div>
           <div>welcome </div>
+          <NButton
+            onClick={() => {
+              $output.emit("output", "info", "demo message");
+            }}
+          >
+            new message
+          </NButton>
         </div>
       );
     };
