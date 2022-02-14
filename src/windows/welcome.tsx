@@ -1,6 +1,4 @@
-import { TOKEN_VIEW_EMITTER } from "@/const";
-import { useEventEmitter, useWindow } from "@/service";
-import { IViewEventInfo } from "@/types";
+import { useWindow } from "@/service";
 import { defineComponent } from "vue";
 const WelcomeWindow = defineComponent({
   props: {
@@ -9,33 +7,11 @@ const WelcomeWindow = defineComponent({
       required: true,
     },
   },
-  setup(props) {
-    const $view = useEventEmitter<IViewEventInfo>(TOKEN_VIEW_EMITTER);
+  setup() {
     return () => {
       return (
         <div>
-          <div>welcome {props.layoutKey}</div>
-          <button
-            onClick={() => {
-              $view.emit("split", props.layoutKey);
-            }}
-          >
-            split
-          </button>
-          <button
-            onClick={() => {
-              $view.emit("vsplit", props.layoutKey);
-            }}
-          >
-            vsplit
-          </button>
-          <button
-            onClick={() => {
-              $view.emit("dispose", props.layoutKey);
-            }}
-          >
-            dispose
-          </button>
+          <div>welcome </div>
         </div>
       );
     };

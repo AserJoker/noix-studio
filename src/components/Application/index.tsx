@@ -4,9 +4,11 @@ import Header from "@/components/Header";
 import Content from "@/components/Content";
 import Footer from "../Footer";
 import { installWelcomeWindow } from "@/windows/welcome";
+import { installOutputWindow } from "@/windows/output";
 export default defineComponent({
   setup() {
     installWelcomeWindow();
+    installOutputWindow();
     return () => (
       <div class={style.application}>
         <div class={style.header}>

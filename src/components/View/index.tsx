@@ -93,19 +93,21 @@ const View = defineComponent({
                     </div>
                   );
                 })}
-              <NDropdown
-                options={windows.value.map((win) => {
-                  return {
-                    label: win.title,
-                    key: win.classname,
-                  };
-                })}
-                trigger="click"
-                onSelect={onChangeWindow}
-                renderLabel={renderDropdownWindow}
-              >
-                <div class={style["view-action"]}>...</div>
-              </NDropdown>
+              {windows.value.length > 1 && (
+                <NDropdown
+                  options={windows.value.map((win) => {
+                    return {
+                      label: win.title,
+                      key: win.classname,
+                    };
+                  })}
+                  trigger="click"
+                  onSelect={onChangeWindow}
+                  renderLabel={renderDropdownWindow}
+                >
+                  <div class={style["view-action"]}>...</div>
+                </NDropdown>
+              )}
             </div>
             <div class={style.window} key={currentWindow.value}>
               {renderWindow(currentWindow.value, props.node.key)}
