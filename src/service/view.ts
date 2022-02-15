@@ -100,5 +100,6 @@ export const useView = (
   emitter.on("split", splitView);
   emitter.on("vsplit", vsplitView);
   emitter.on("dispose", disposeView);
+  emitter.emit("ready");
   return { splitView, vsplitView, disposeView };
 };

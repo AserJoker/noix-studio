@@ -16,5 +16,6 @@ export type IViewEventInfo = {
     reverse?: boolean
   ) => void;
   dispose: (key: string) => void;
+  ready: () => void;
 };
 export type IViewEventEmitter = IEventEmitter<IViewEventInfo>;

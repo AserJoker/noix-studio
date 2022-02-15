@@ -18,5 +18,6 @@ export const useFooter = (
     const index = items.findIndex((i) => i.key === key);
     items.splice(index, 1);
   });
+  emitter.emit("ready");
   return { items };
 };

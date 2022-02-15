@@ -55,7 +55,7 @@ const ConsoleWindow = defineComponent({
                 onKeydown={(event) => {
                   if (event.key === "Enter") {
                     const target = event.target as HTMLInputElement;
-                    $console.emit("output", "input", target.value);
+                    $console.emit("output", target.value, "input");
                     const inputValue = target.value;
                     target.value = "";
                     $console.emit("input", inputValue);

@@ -9,5 +9,6 @@ export type IFooterInfo = {
   select: (key: string) => void;
   insert: (item: IFooterItem, lastKey?: string) => void;
   delete: (key: string) => void;
+  ready: () => void;
 };
 export type IFooterEventEmitter = IEventEmitter<IFooterInfo>;

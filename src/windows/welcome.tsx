@@ -18,7 +18,7 @@ const WelcomeWindow = defineComponent({
           <div>welcome </div>
           <NButton
             onClick={() => {
-              $output.emit("output", "info", "demo message");
+              $output.emit("output", "demo message", "info");
             }}
           >
             new message

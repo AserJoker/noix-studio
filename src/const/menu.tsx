@@ -1,6 +1,6 @@
-import { DropdownOption } from "naive-ui";
+import { IMenuOption } from "@/types";
 
-const menus: DropdownOption[] = [
+const menus: IMenuOption[] = [
   {
     label: "项目",
     key: "project",
