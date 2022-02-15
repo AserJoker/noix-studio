@@ -10,6 +10,7 @@ const ConsoleWindow = defineComponent({
     const el = ref<HTMLDivElement | null>();
     const eli = ref<HTMLInputElement | null>();
     const $console = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
+    $console.memory("ready");
     const { messages } = useConsole($console);
     watch(messages, () => {
       nextTick(() => {

@@ -21,10 +21,15 @@ export const useEventEmitter = <
   }
   // eslint-disable-next-line @typescript-eslint/ban-types
   const callbacks: Record<string, Function[]> = {};
+  const memorys: Record<string, unknown[]> = {};
+  const memoryEvents: (keyof T)[] = [];
   const on = <E extends keyof T>(event: E, cb: T[E]) => {
     const cbs = callbacks[event as string] || [];
     cbs.push(cb);
     callbacks[event as string] = cbs;
+    if (memoryEvents.includes(event) && memorys[event as string]) {
+      cb(...memorys[event as string]);
+    }
     return () => release(event, cb);
   };
   const emit = <E extends keyof T>(event: E, ...args: unknown[]) => {
@@ -32,6 +37,9 @@ export const useEventEmitter = <
     cbs.forEach((cb) => {
       cb(...args);
     });
+    if (memoryEvents.includes(event)) {
+      memorys[event as string] = args;
+    }
   };
   const release = <E extends keyof T>(event: E, cb: T[E]) => {
     const cbs = callbacks[event as string];
@@ -53,7 +61,19 @@ export const useEventEmitter = <
     cbs.push(wrapper);
     callbacks[event as string] = cbs;
   };
-  const emitter = { on, emit, release, once };
+  const memory = <E extends keyof T>(event: E) => {
+    if (!memoryEvents.includes(event)) {
+      memoryEvents.push(event);
+    }
+  };
+  const clearMemory = <E extends keyof T>(event: E) => {
+    const index = memoryEvents.findIndex((m) => m === event);
+    if (index !== -1) {
+      memoryEvents.splice(index, 1);
+    }
+    delete memorys[event as string];
+  };
+  const emitter = { on, emit, release, once, memory,clearMemory };
   if (key) {
     emitterCache.set(
       key,

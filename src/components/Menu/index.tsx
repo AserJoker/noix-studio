@@ -9,6 +9,7 @@ const Menu = defineComponent({
     const $menu = useEventEmitter<ITreeEventInfo<IMenuOption> & IMenuEventInfo>(
       TOKEN_MENU_EMITTER
     );
+    $menu.memory("ready");
     const { tree, getTreeNode } = useTree(
       $menu as IEventEmitter<ITreeEventInfo<IMenuOption>>,
       { key: "root", children: menus }

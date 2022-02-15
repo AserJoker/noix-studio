@@ -11,14 +11,14 @@ const WelcomeWindow = defineComponent({
     },
   },
   setup() {
-    const $output = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
+    const $console = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
     return () => {
       return (
         <div>
           <div>welcome </div>
           <NButton
             onClick={() => {
-              $output.emit("output", "demo message", "info");
+              $console.emit("output", "demo message", "info");
             }}
           >
             new message

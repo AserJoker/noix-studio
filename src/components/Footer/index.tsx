@@ -7,6 +7,7 @@ import style from "./index.module.scss";
 const Footer = defineComponent({
   setup() {
     const $footer = useEventEmitter<IFooterInfo>(TOKEN_FOOTER_EMITTER);
+    $footer.memory("ready");
     const { items } = useFooter($footer, [
       {
         key: "version",
