@@ -1,5 +1,6 @@
 import { IView } from "@/types";
 import { TOKEN_CONSOLE_WINDOW } from "@/windows/console";
+import { TOKEN_EXPLORER_WINDOW } from "@/windows/explorer";
 import { TOKEN_WELCOME_WINDOW } from "@/windows/welcome";
 
 export const view: IView = {
@@ -10,7 +11,7 @@ export const view: IView = {
   children: [
     {
       type: "window",
-      classname: [TOKEN_WELCOME_WINDOW],
+      classname: [TOKEN_EXPLORER_WINDOW],
       key: "explorer",
     },
     {

@@ -12,10 +12,17 @@ export const useTree = <T extends { children?: T[]; key: string }>(
   defaultValue: T
 ) => {
   const tree = reactive<T>(defaultValue) as T;
-  const treeList: Record<string, () => T> = {
-    root: () => tree,
-  };
+  const treeList: Record<string, () => T> = {};
   const parentInfo: Record<string, string> = {};
+  const updateTreeList = (node: T) => {
+    treeList[node.key] = () => node;
+    node.children &&
+      node.children.forEach((c) => {
+        parentInfo[c.key] = node.key;
+        updateTreeList(c);
+      });
+  };
+  updateTreeList(tree);
   const deleteItem = (key: string) => {
     const parentKey = parentInfo[key];
     const parent = treeList[parentKey]?.();

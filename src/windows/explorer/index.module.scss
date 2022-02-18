@@ -1,0 +1,10 @@
+.input {
+  --n-height: fit-content !important;
+  --n-padding-left: 8px !important;
+  --n-padding-right: 8px !important;
+}
+.icon {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

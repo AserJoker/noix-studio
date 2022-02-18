@@ -1,0 +1,53 @@
+.treenode {
+  cursor: pointer;
+  user-select: none;
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+}
+.selectedItem {
+  display: flex;
+  justify-content: space-between;
+  background-color: #eee;
+  border-bottom: 1px solid #ddd;
+}
+.item:hover {
+  background-color: #eeeeee;
+}
+.label {
+  display: flex;
+}
+.prefix,
+.icon,
+.suffix {
+  display: flex;
+  justify-content: center;
+  margin-right: 4px;
+  align-items: center;
+}
+.prefix,
+.icon {
+  height: 100%;
+}
+.submit {
+  cursor: pointer;
+  display: flex;
+}
+.action {
+  display: flex;
+  align-items: center;
+  width: 24px;
+  justify-content: center;
+  border-radius: 6px;
+}
+.action:hover {
+  background-color: #fdfdfd;
+  width: 24px;
+}
+.input {
+  --n-height: fit-content !important;
+  --n-padding-left: 8px !important;
+  --n-padding-right: 8px !important;
+}
