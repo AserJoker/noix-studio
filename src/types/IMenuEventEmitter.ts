@@ -1,11 +1,7 @@
-import { MenuOptionSharedPart } from "naive-ui/lib/menu/src/interface";
-import { VNodeChild } from "vue";
-type Option = MenuOptionSharedPart & {
-  label?: string | (() => VNodeChild);
-};
-export interface IMenuOption extends Option {
+export interface IMenuOption {
   key: string;
   children?: IMenuOption[];
+  label: string;
 }
 export type IMenuEventInfo = {
   enable: (key: string) => void;

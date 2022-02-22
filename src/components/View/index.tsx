@@ -1,8 +1,8 @@
 import { useWindow } from "@/service";
 import { IView } from "@/types";
 import { defineComponent, PropType, ref } from "vue";
-import { DropdownOption, NButton, NDropdown } from "naive-ui";
 import style from "./index.module.scss";
+import Dropdown from "@/widgets/dropdown";
 
 const View = defineComponent({
   props: {
@@ -14,6 +14,7 @@ const View = defineComponent({
   setup(props) {
     const { renderWindow, getWindow } = useWindow();
     const currentWindow = ref("");
+    const visible = ref(false);
     const windows = ref<{ title: string; classname: string }[]>([]);
     if (props.node?.type === "window") {
       currentWindow.value = props.node.classname[0];
@@ -30,41 +31,10 @@ const View = defineComponent({
         }
       });
     }
-    const onCloseWindow = (classname: string) => {
-      const index = windows.value.findIndex(
-        (win) => win.classname === classname
-      );
-      if (index !== -1) {
-        windows.value.splice(index, 1);
-      }
-      if (classname === currentWindow.value) {
-        currentWindow.value = windows.value[0].classname;
-      }
-    };
     const onChangeWindow = (classname: string) => {
       if (windows.value.find((win) => win.classname === classname)) {
         currentWindow.value = classname;
       }
-    };
-    const renderDropdownWindow = (opt: DropdownOption) => {
-      const key = opt.key as string;
-      return (
-        <div class={style["dropdown-item"]}>
-          <div class={style["dropdown-item-title"]}>{opt.label}</div>
-          <div class={style["dropdown-item-close"]}>
-            <NButton
-              type="error"
-              size="tiny"
-              onClick={() => {
-                onCloseWindow(key);
-              }}
-              disabled={windows.value.length <= 1}
-            >
-              x
-            </NButton>
-          </div>
-        </div>
-      );
     };
     return () => {
       if (!props.node) {
@@ -94,19 +64,27 @@ const View = defineComponent({
                   );
                 })}
               {windows.value.length > 1 && (
-                <NDropdown
-                  options={windows.value.map((win) => {
-                    return {
-                      label: win.title,
-                      key: win.classname,
-                    };
-                  })}
-                  trigger="click"
-                  onSelect={onChangeWindow}
-                  renderLabel={renderDropdownWindow}
+                <div
+                  onClick={() => {
+                    visible.value = true;
+                  }}
+                  style={{
+                    position: "relative",
+                  }}
                 >
                   <div class={style["view-action"]}>...</div>
-                </NDropdown>
+                  <Dropdown
+                    dataSource={windows.value.map((v) => {
+                      return {
+                        label: v.title,
+                        key: v.classname,
+                      };
+                    })}
+                    visible={visible.value}
+                    onClose={() => (visible.value = false)}
+                    onSelect={(node) => onChangeWindow(node.key)}
+                  />
+                </div>
               )}
             </div>
             <div class={style.window} key={currentWindow.value}>

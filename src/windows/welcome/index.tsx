@@ -2,7 +2,7 @@ import { TOKEN_CONSOLE_EMITTER } from "@/const";
 import { useEventEmitter, useWindow } from "@/service";
 import { IConsoleEventInfo } from "@/types";
 import { NButton } from "naive-ui";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 const WelcomeWindow = defineComponent({
   props: {
     layoutKey: {
@@ -12,6 +12,7 @@ const WelcomeWindow = defineComponent({
   },
   setup() {
     const $console = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
+    const visible = ref(false);
     return () => {
       return (
         <div>
@@ -19,6 +20,7 @@ const WelcomeWindow = defineComponent({
           <NButton
             onClick={() => {
               $console.emit("output", "demo message", "info");
+              visible.value = true;
             }}
           >
             new message

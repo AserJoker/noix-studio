@@ -1,6 +1,6 @@
 import { VNodeChild } from "vue";
 export interface IResource {
-  label: string | (() => VNodeChild);
+  label: string;
   key: string;
   prefix?: (node: IResource) => VNodeChild;
   suffix?: (node: IResource) => VNodeChild;

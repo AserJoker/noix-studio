@@ -1,0 +1,43 @@
+.dropdown {
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  min-width: 180px;
+  position: absolute;
+  z-index: 100;
+}
+.item {
+  background-color: #ffffff;
+  color: #111111;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+  position: relative;
+}
+.title:hover {
+  background-color: #cccccc;
+}
+.item:last-child {
+  border: none;
+}
+.children {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: calc(100%);
+  top: calc(4px);
+  min-width: 180px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+}
+.bottom-left {
+  left: 0;
+}
+.bottom-right {
+  right: 0;
+}

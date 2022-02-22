@@ -1,7 +1,7 @@
 import { useWindow, useEventEmitter, ITreeEventInfo, useTree } from "@/service";
 import { IEventEmitter, IExplorerEventInfo, IResource } from "@/types";
 import { defineComponent, ref } from "vue";
-import Tree, { ITreeNode } from "./components/Tree";
+import Tree, { ITreeNode } from "@/widgets/tree";
 import { resourcesTree, TOKEN_EXPLORER_EMITTER } from "@/const";
 import { NIcon } from "naive-ui";
 import { AddOutline, Folder, TrashOutline } from "@vicons/ionicons5";

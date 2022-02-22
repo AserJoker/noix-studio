@@ -41,7 +41,10 @@ export const useEventEmitter = <
       memorys[event as string] = args;
     }
   };
-  const release = <E extends keyof T>(event: E, cb: T[E]) => {
+  const release = <E extends keyof T>(event: E, cb?: T[E]) => {
+    if (!cb) {
+      callbacks[event as string] = [];
+    }
     const cbs = callbacks[event as string];
     if (cbs) {
       const index = cbs.findIndex((item) => item === cb);
@@ -73,7 +76,7 @@ export const useEventEmitter = <
     }
     delete memorys[event as string];
   };
-  const emitter = { on, emit, release, once, memory,clearMemory };
+  const emitter = { on, emit, release, once, memory, clearMemory };
   if (key) {
     emitterCache.set(
       key,

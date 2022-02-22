@@ -64,6 +64,7 @@
   cursor: pointer;
   margin-right: 8px;
   border-radius: 4px;
+  height: 100%;
 }
 .view-action:hover {
   background-color: #ddd;
@@ -89,6 +90,7 @@
   flex-direction: column;
   min-width: 16px;
   text-align: center;
+  user-select: none;
 }
 .action:hover {
   background-color: #ddd;

@@ -12,7 +12,7 @@ import { NIcon, NInput } from "naive-ui";
 import { CheckOutlined, EditOutlined } from "@vicons/antd";
 export interface ITreeNode {
   key: string;
-  label: string | (() => VNodeChild);
+  label: string;
   children?: ITreeNode[];
   prefix?: (node: ITreeNode) => VNodeChild;
   stuffix?: (node: ITreeNode) => VNodeChild;
@@ -126,9 +126,7 @@ const Tree = defineComponent({
           </div>
         );
       }
-      return (
-        <div>{typeof node.label === "string" ? node.label : node.label()}</div>
-      );
+      return <div>{node.label}</div>;
     };
     const onClickNode = (node: ITreeNode, event: MouseEvent) => {
       if (node.children) {
