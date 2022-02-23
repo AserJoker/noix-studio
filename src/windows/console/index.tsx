@@ -47,7 +47,7 @@ const ConsoleWindow = defineComponent({
                 </div>
               );
             })}
-            <div>
+            <div class={style.inputline}>
               {">"}
               <input
                 ref={eli}

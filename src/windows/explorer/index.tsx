@@ -1,4 +1,10 @@
-import { useWindow, useEventEmitter, ITreeEventInfo, useTree } from "@/service";
+import {
+  useWindow,
+  useEventEmitter,
+  ITreeEventInfo,
+  useTree,
+  useExplorer,
+} from "@/service";
 import { IEventEmitter, IExplorerEventInfo, IResource } from "@/types";
 import { defineComponent, ref } from "vue";
 import Tree, { ITreeNode } from "@/widgets/tree";
@@ -6,6 +12,7 @@ import { resourcesTree, TOKEN_EXPLORER_EMITTER } from "@/const";
 import { NIcon } from "naive-ui";
 import { AddOutline, Folder, TrashOutline } from "@vicons/ionicons5";
 import { FileOutlined } from "@vicons/antd";
+import Dropdown, { IDropdownItem } from "@/widgets/dropdown";
 const ExplorerWindow = defineComponent({
   setup() {
     const $explorer = useEventEmitter<
@@ -22,6 +29,13 @@ const ExplorerWindow = defineComponent({
       }
     );
     const selectedKeys = ref<string[]>([]);
+    const contextmenu = ref<IDropdownItem[]>([]);
+    const currentContextMenuNode = ref<IResource | null>(null);
+    const showContextMenu = ref(false);
+    const { getContextmenu } = useExplorer(
+      $explorer as IEventEmitter<IExplorerEventInfo>
+    );
+    const pos = ref({ x: 0, y: 0 });
     const prefix = (node: ITreeNode) => {
       return <NIcon>{node.children ? <Folder /> : <FileOutlined />}</NIcon>;
     };
@@ -43,6 +57,17 @@ const ExplorerWindow = defineComponent({
                 $explorer.emit("delete", node.key);
               }
             }}
+            onContextmenu={(node, e) => {
+              const menus = getContextmenu(node);
+              if (menus.length) {
+                contextmenu.value = menus;
+                pos.value.x = e.clientX;
+                pos.value.y = e.clientY;
+                showContextMenu.value = true;
+                currentContextMenuNode.value = node;
+              }
+              e.preventDefault();
+            }}
             actions={[
               {
                 key: "add",
@@ -62,6 +87,20 @@ const ExplorerWindow = defineComponent({
                 ),
               },
             ]}
+          />
+          <Dropdown
+            dataSource={contextmenu.value}
+            visible={showContextMenu.value}
+            onClose={() => (showContextMenu.value = false)}
+            x={pos.value.x}
+            y={pos.value.y}
+            onSelect={(node) => {
+              $explorer.emit(
+                "contextmenu",
+                node.key,
+                currentContextMenuNode.value
+              );
+            }}
           />
         </>
       );

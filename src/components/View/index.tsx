@@ -1,6 +1,6 @@
 import { useWindow } from "@/service";
 import { IView } from "@/types";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType, ref, watch } from "vue";
 import style from "./index.module.scss";
 import Dropdown from "@/widgets/dropdown";
 
@@ -16,21 +16,27 @@ const View = defineComponent({
     const currentWindow = ref("");
     const visible = ref(false);
     const windows = ref<{ title: string; classname: string }[]>([]);
-    if (props.node?.type === "window") {
-      currentWindow.value = props.node.classname[0];
-      windows.value = props.node.classname.map((classname) => {
-        const win = getWindow(classname);
-        if (win) {
-          const { title } = win;
-          return {
-            classname,
-            title,
-          };
-        } else {
-          throw new Error(`unknown window ${classname}`);
+    watch(
+      () => props.node,
+      () => {
+        if (props.node?.type === "window") {
+          currentWindow.value = props.node.classname[0];
+          windows.value = props.node.classname.map((classname) => {
+            const win = getWindow(classname);
+            if (win) {
+              const { title } = win;
+              return {
+                classname,
+                title,
+              };
+            } else {
+              throw new Error(`unknown window ${classname}`);
+            }
+          });
         }
-      });
-    }
+      },
+      { immediate: true }
+    );
     const onChangeWindow = (classname: string) => {
       if (windows.value.find((win) => win.classname === classname)) {
         currentWindow.value = classname;

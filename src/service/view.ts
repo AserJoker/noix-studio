@@ -97,9 +97,19 @@ export const useView = (
         key: parent.key,
       });
   };
+  const addWindow = (viewId: string, classname: string) => {
+    const node = getTreeNode(viewId);
+    if (node && node.type === "window") {
+      emitter.emit("update", {
+        ...node,
+        classname: [...node.classname, classname],
+      });
+    }
+  };
   emitter.on("split", splitView);
   emitter.on("vsplit", vsplitView);
   emitter.on("dispose", disposeView);
+  emitter.on("addwindow", addWindow);
   emitter.emit("ready");
   return { splitView, vsplitView, disposeView };
 };

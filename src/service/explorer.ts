@@ -1,13 +1,13 @@
 import { IEventEmitter, IExplorerEventInfo, IResource } from "@/types";
-import { DropdownOption } from "naive-ui";
+import { IDropdownItem } from "@/widgets/dropdown";
 
 export const useExplorer = (emitter: IEventEmitter<IExplorerEventInfo>) => {
   const contextmenuItems: {
-    opt: DropdownOption;
+    opt: IDropdownItem;
     check: (node: IResource) => boolean;
   }[] = [];
   const addContentmenuItem = (
-    opt: DropdownOption,
+    opt: IDropdownItem,
     check: (node: IResource) => boolean
   ) => {
     contextmenuItems.push({ opt, check });

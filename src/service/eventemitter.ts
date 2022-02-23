@@ -76,7 +76,11 @@ export const useEventEmitter = <
     }
     delete memorys[event as string];
   };
-  const emitter = { on, emit, release, once, memory, clearMemory };
+  const reset = () => {
+    Object.keys(callbacks).forEach((key) => delete callbacks[key]);
+    Object.keys(memorys).forEach((key) => clearMemory(key));
+  };
+  const emitter = { on, emit, release, once, memory, clearMemory, reset };
   if (key) {
     emitterCache.set(
       key,

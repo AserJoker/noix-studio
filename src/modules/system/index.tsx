@@ -1,6 +1,16 @@
-import { TOKEN_CONSOLE_EMITTER, TOKEN_MENU_EMITTER } from "@/const";
+import {
+  TOKEN_CONSOLE_EMITTER,
+  TOKEN_EXPLORER_EMITTER,
+  TOKEN_MENU_EMITTER,
+  TOKEN_VIEW_EMITTER,
+} from "@/const";
 import { useEventEmitter } from "@/service";
-import { IConsoleEventInfo, IMenuEventInfo } from "@/types";
+import {
+  IConsoleEventInfo,
+  IExplorerEventInfo,
+  IMenuEventInfo,
+  IViewEventInfo,
+} from "@/types";
 import { installConsoleWindow } from "@/windows/console";
 import { installExplorerWindow } from "@/windows/explorer";
 import { installWelcomeWindow } from "@/windows/welcome";
@@ -10,8 +20,10 @@ const installWindow = () => {
   installConsoleWindow();
   installExplorerWindow();
 };
+const env: Record<string, string> = {};
 const installConsole = () => {
   const $console = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
+  const $view = useEventEmitter<IViewEventInfo>(TOKEN_VIEW_EMITTER);
   $console.once("ready", () => {
     $console.emit("install", "clear", () => {
       $console.emit("clear");
@@ -21,16 +33,49 @@ const installConsole = () => {
         "output",
         msgs
           .map((msg) => {
+            if (msg.startsWith("$") && !msg.startsWith("$$")) {
+              return env[msg.substring(1)] || "";
+            }
             return msg;
           })
           .join(" "),
         "info"
       );
     });
+    $console.emit("install", "addwindow", (key: string, classname: string) => {
+      $view.emit("addwindow", key, classname);
+    });
+    $console.emit("install", "set", (...list: string[]) => {
+      list.map((item) => {
+        const [name, value = ""] = item.split("=");
+        env[name] = value;
+      });
+    });
+    $console.emit("install", "env", () => {
+      const keys = Object.keys(env);
+      const output = keys.map((key) => `${key}=${env[key] || ""}`).join(";");
+      $console.emit("output", output);
+    });
   });
 };
 const installExplorer = () => {
-  return;
+  const $console = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
+  const $explorer = useEventEmitter<IExplorerEventInfo>(TOKEN_EXPLORER_EMITTER);
+  $explorer.on("ready", () => {
+    $explorer.emit(
+      "addContentmenuItem",
+      {
+        label: "查看",
+        key: "view",
+      },
+      () => true
+    );
+    $explorer.on("contextmenu", (key, node) => {
+      if (key === "view") {
+        $console.emit("output", node.label);
+      }
+    });
+  });
 };
 const system = {
   install: () => {

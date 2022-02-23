@@ -15,6 +15,7 @@ export type IViewEventInfo = {
     split?: string,
     reverse?: boolean
   ) => void;
+  addwindow: (key: string, classname: string) => void;
   dispose: (key: string) => void;
   ready: () => void;
 };

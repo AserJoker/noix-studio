@@ -22,6 +22,12 @@ const Dropdown = defineComponent({
       type: Object as PropType<IDropdownItem[]>,
       default: [],
     },
+    x: {
+      type: Number,
+    },
+    y: {
+      type: Number,
+    },
   },
   emits: {
     select: (node: IDropdownItem) => {
@@ -100,6 +106,7 @@ const Dropdown = defineComponent({
         <div
           {...attrs}
           class={`${style.dropdown} ${style[pos.value]} ${attrs.class || ""}`}
+          style={{ left: props.x + "px", top: props.y + "px" }}
           ref={el}
         >
           {dataSource.map((item) => renderItem(item))}
