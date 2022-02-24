@@ -94,7 +94,9 @@ const View = defineComponent({
               )}
             </div>
             <div class={style.window} key={currentWindow.value}>
-              {renderWindow(currentWindow.value, props.node.key)}
+              <div class={style.content}>
+                {renderWindow(currentWindow.value, props.node.key)}
+              </div>
             </div>
           </div>
         );
@@ -102,16 +104,15 @@ const View = defineComponent({
         const children0Style = {} as Record<string, unknown>;
         if (props.node.direction === "row") {
           if (props.node.split) {
-            children0Style.width = props.node.split;
+            children0Style.minWidth = props.node.split;
           } else {
-            children0Style.width = "50%";
+            children0Style.minWidth = "50%";
           }
         } else if (props.node.direction === "column") {
-          children0Style.height = props.node.split;
           if (props.node.split) {
-            children0Style.height = props.node.split;
+            children0Style.minHeight = props.node.split;
           } else {
-            children0Style.height = "50%";
+            children0Style.minHeight = "50%";
           }
         }
         return (

@@ -1,22 +1,12 @@
-import {
-  defineComponent,
-  nextTick,
-  PropType,
-  ref,
-  VNodeChild,
-  watch,
-} from "vue";
+import { defineComponent, PropType, ref, VNodeChild, watch } from "vue";
 import { ChevronDown, ChevronForward } from "@vicons/ionicons5";
 import style from "./index.module.scss";
-import { NIcon, NInput } from "naive-ui";
-import { CheckOutlined, EditOutlined } from "@vicons/antd";
 export interface ITreeNode {
   key: string;
   label: string;
   children?: ITreeNode[];
   prefix?: (node: ITreeNode) => VNodeChild;
   stuffix?: (node: ITreeNode) => VNodeChild;
-  canEdit?: boolean;
 }
 interface IAction {
   key: string;
@@ -50,9 +40,6 @@ const Tree = defineComponent({
       type: Boolean,
       default: true,
     },
-    canEdit: {
-      type: Boolean,
-    },
   },
   emits: {
     select: (keys: string[]) => {
@@ -74,58 +61,7 @@ const Tree = defineComponent({
   setup: (props, { emit }) => {
     const expandKeys = ref<string[]>([]);
     const selectedKeys = ref<string[]>([]);
-    const editKey = ref("");
-    const name = ref("");
-    const input = ref<HTMLInputElement | null>(null);
-    const startEdit = (node: ITreeNode) => {
-      if (typeof node.label === "string") {
-        editKey.value = node.key;
-        name.value = node.label;
-        selectedKeys.value = [node.key];
-        nextTick(() => {
-          if (input.value) {
-            input.value.focus();
-          }
-        });
-      }
-    };
     const renderLabel = (node: ITreeNode) => {
-      if (node.key === editKey.value) {
-        return (
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            <NInput
-              ref={input}
-              class={style.input}
-              value={name.value}
-              onUpdateValue={(val) => {
-                name.value = val;
-              }}
-            >
-              {{
-                suffix: () => (
-                  <div
-                    onClick={(e) => {
-                      editKey.value = "";
-                      emit("update", { key: node.key, label: name.value });
-                      name.value = "";
-                      e.stopPropagation();
-                    }}
-                    class={style.submit}
-                  >
-                    <NIcon color="#111111">
-                      <CheckOutlined />
-                    </NIcon>
-                  </div>
-                ),
-              }}
-            </NInput>
-          </div>
-        );
-      }
       return <div>{node.label}</div>;
     };
     const onClickNode = (node: ITreeNode, event: MouseEvent) => {
@@ -175,13 +111,13 @@ const Tree = defineComponent({
           >
             <div class={style.label}>
               {node.children && (
-                <NIcon class={style.icon}>
+                <div class={style.icon}>
                   {expandKeys.value.includes(node.key) ? (
                     <ChevronDown />
                   ) : (
                     <ChevronForward />
                   )}
-                </NIcon>
+                </div>
               )}
               <div class={style.prefix}>
                 {(props.prefix && props.prefix(node)) ||
@@ -196,19 +132,6 @@ const Tree = defineComponent({
                 {(props.suffix && props.suffix(node)) ||
                   (node.stuffix && node.stuffix(node))}
               </div>
-              {(props.canEdit || node.canEdit) && editKey.value !== node.key && (
-                <div
-                  onClick={(e) => {
-                    startEdit(node);
-                    e.stopPropagation();
-                  }}
-                  class={style.action}
-                >
-                  <NIcon>
-                    <EditOutlined />
-                  </NIcon>
-                </div>
-              )}
               {props.actions &&
                 props.actions.map((act) => {
                   const action = act.render(node);

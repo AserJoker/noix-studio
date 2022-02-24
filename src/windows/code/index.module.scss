@@ -1,0 +1,17 @@
+:global(.CodeMirror) {
+  height: 100% !important;
+  overflow: scroll;
+  font-size: 15px;
+}
+:global(.CodeMirror-scroll) {
+  height: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.textarea {
+  height: 100%;
+}
+.tooltip {
+  height: 1px;
+  border-bottom: 1px solid #eee;
+}

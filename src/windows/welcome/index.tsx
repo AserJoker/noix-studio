@@ -1,8 +1,44 @@
-import { TOKEN_CONSOLE_EMITTER } from "@/const";
-import { useEventEmitter, useWindow } from "@/service";
-import { IConsoleEventInfo } from "@/types";
-import { NButton } from "naive-ui";
-import { defineComponent, ref } from "vue";
+import { TOKEN_VIEW_EMITTER } from "@/const";
+import { ITreeEventInfo, useEventEmitter, useWindow } from "@/service";
+import { IView, IViewEventInfo } from "@/types";
+import { defineComponent } from "vue";
+import { TOKEN_CODE_WINDOW } from "../code";
+import { TOKEN_CONSOLE_WINDOW } from "../console";
+import { TOKEN_EXPLORER_WINDOW } from "../explorer";
+import style from "./index.module.scss";
+export const TOKEN_WELCOME_WINDOW = "token.window.welcome";
+const view = {
+  key: "root",
+  type: "group",
+  direction: "row",
+  split: "240px",
+  children: [
+    {
+      type: "window",
+      classname: [TOKEN_EXPLORER_WINDOW],
+      key: "explorer",
+    },
+    {
+      type: "group",
+      key: "content",
+      direction: "column",
+      split: "240px",
+      reverse: true,
+      children: [
+        {
+          type: "window",
+          key: "console",
+          classname: [TOKEN_CONSOLE_WINDOW],
+        },
+        {
+          type: "window",
+          key: "workbranch",
+          classname: [TOKEN_CODE_WINDOW, TOKEN_WELCOME_WINDOW],
+        },
+      ],
+    },
+  ],
+};
 const WelcomeWindow = defineComponent({
   props: {
     layoutKey: {
@@ -11,20 +47,20 @@ const WelcomeWindow = defineComponent({
     },
   },
   setup() {
-    const $console = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
-    const visible = ref(false);
+    const $view = useEventEmitter<IViewEventInfo & ITreeEventInfo<IView>>(
+      TOKEN_VIEW_EMITTER
+    );
     return () => {
       return (
-        <div>
-          <div>welcome </div>
-          <NButton
+        <div class={style.content}>
+          <div
             onClick={() => {
-              $console.emit("output", "demo message", "info");
-              visible.value = true;
+              $view.emit("update", view);
             }}
+            class={style.action}
           >
-            new message
-          </NButton>
+            New Project
+          </div>
         </div>
       );
     };
@@ -40,4 +76,3 @@ export const installWelcomeWindow = () => {
     title: "welcome",
   });
 };
-export const TOKEN_WELCOME_WINDOW = "token.window.welcome";

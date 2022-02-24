@@ -1,0 +1,16 @@
+.action {
+  cursor: pointer;
+  border: 1px solid #eee;
+  display: block;
+  width: fit-content;
+  padding: 0 8px;
+}
+.action:hover {
+  background-color: #eee;
+}
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

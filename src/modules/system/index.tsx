@@ -4,16 +4,19 @@ import {
   TOKEN_MENU_EMITTER,
   TOKEN_VIEW_EMITTER,
 } from "@/const";
-import { useEventEmitter } from "@/service";
+import { ITreeEventInfo, useEventEmitter } from "@/service";
 import {
   IConsoleEventInfo,
   IExplorerEventInfo,
   IMenuEventInfo,
+  IResource,
   IViewEventInfo,
 } from "@/types";
+import { installCodeWindow } from "@/windows/code";
 import { installConsoleWindow } from "@/windows/console";
 import { installExplorerWindow } from "@/windows/explorer";
 import { installWelcomeWindow } from "@/windows/welcome";
+import { TrashOutline } from "@vicons/ionicons5";
 
 const installWindow = () => {
   installWelcomeWindow();
@@ -60,7 +63,9 @@ const installConsole = () => {
 };
 const installExplorer = () => {
   const $console = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
-  const $explorer = useEventEmitter<IExplorerEventInfo>(TOKEN_EXPLORER_EMITTER);
+  const $explorer = useEventEmitter<
+    IExplorerEventInfo & ITreeEventInfo<IResource>
+  >(TOKEN_EXPLORER_EMITTER);
   $explorer.on("ready", () => {
     $explorer.emit(
       "addContentmenuItem",
@@ -70,11 +75,29 @@ const installExplorer = () => {
       },
       () => true
     );
-    $explorer.on("contextmenu", (key, node) => {
-      if (key === "view") {
-        $console.emit("output", node.label);
-      }
+    $explorer.emit("addAction", {
+      key: "delete",
+      render: (node: IResource) => {
+        if (node.key === "root") {
+          return false;
+        }
+        return (
+          <div class="icon">
+            <TrashOutline />
+          </div>
+        );
+      },
     });
+  });
+  $explorer.on("contextmenu", (key, node) => {
+    if (key === "view") {
+      $console.emit("output", node.label);
+    }
+  });
+  $explorer.on("action", (action, node) => {
+    if (action === "delete") {
+      $explorer.emit("delete", node.key);
+    }
   });
 };
 const system = {
@@ -82,6 +105,7 @@ const system = {
     installWindow();
     installConsole();
     installExplorer();
+    installCodeWindow();
     const $console = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
     const $menu = useEventEmitter<IMenuEventInfo>(TOKEN_MENU_EMITTER);
     $menu.on("ready", () => {

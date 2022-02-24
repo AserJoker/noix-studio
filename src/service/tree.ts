@@ -27,7 +27,7 @@ export const useTree = <T extends { children?: T[]; key: string }>(
     const parentKey = parentInfo[key];
     const parent = treeList[parentKey]?.();
     if (!parent) {
-      throw new Error(`failed to find tree node id#${parentKey}`);
+      throw new Error(`cannot delete root node id#${key}`);
     }
     if (!parent.children) {
       throw new Error(`failed to find tree node id#${key}`);
