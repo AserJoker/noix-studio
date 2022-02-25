@@ -27,9 +27,7 @@ export const useConsole = (emitter: IConsoleEventEmitter) => {
   const uninstall = (name: string) => {
     delete callbacks[name];
   };
-  emitter.on("install", install);
-  emitter.on("uninstall", uninstall);
-  emitter.on("input", (msg) => {
+  const onInput = (msg: string) => {
     const [name, ...args] = msg.split(" ");
     const handle = callbacks[name];
     if (handle) {
@@ -37,10 +35,22 @@ export const useConsole = (emitter: IConsoleEventEmitter) => {
     } else {
       emitter.emit("output", `commond not found: ${name}`, "error");
     }
-  });
-  emitter.on("clear", () => {
+  };
+  const onClear = () => {
     messages.splice(0, messages.length);
-  });
-  emitter.emit("ready");
-  return { messages, install, uninstall };
+  };
+  const init = () => {
+    emitter.on("install", install);
+    emitter.on("uninstall", uninstall);
+    emitter.on("input", onInput);
+    emitter.on("clear", onClear);
+    emitter.emit("ready");
+  };
+  const release = () => {
+    emitter.release("install", install);
+    emitter.release("uninstall", uninstall);
+    emitter.release("input", onInput);
+    emitter.release("clear", onClear);
+  };
+  return { messages, install, uninstall, init, release };
 };

@@ -1,11 +1,24 @@
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import style from "./index.module.scss";
 import Header from "@/components/Header";
 import Content from "@/components/Content";
 import Footer from "../Footer";
 import system from "@/modules/system";
+import { installWelcomeWindow } from "@/windows/welcome";
 export default defineComponent({
-  setup() {
+  props: {
+    modules: {
+      type: Array as PropType<{ install: () => void }[]>,
+      default: () => {
+        return [];
+      },
+    },
+  },
+  setup(props) {
+    installWelcomeWindow();
+    props.modules.forEach((m) => {
+      m.install();
+    });
     system.install();
     return () => (
       <div class={style.application}>

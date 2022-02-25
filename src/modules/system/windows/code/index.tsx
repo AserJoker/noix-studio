@@ -33,7 +33,7 @@ const CodeWindow = defineComponent({
       if (el.value && container.value) {
         const editor = CodeMirror.fromTextArea(el.value, {
           lineNumbers: true,
-          mode: "javascript",
+          mode: "text/typescript",
           hintOptions: {
             completeSingle: false,
           },
@@ -46,15 +46,16 @@ const CodeWindow = defineComponent({
         });
         $buffer.on("focus", (n, v) => {
           name.value = n;
-          editor.setValue(v);
+          editor.setValue(v || "");
         });
       }
     });
     return () => {
       return (
         <div class={style.textarea}>
-          <div ref={container} class={style.tooltip}></div>
+          <div>{name.value}</div>
           <textarea ref={el} />
+          <div ref={container} class={style.tooltip}></div>
         </div>
       );
     };
@@ -67,7 +68,7 @@ export const installCodeWindow = () => {
     content: (layoutkey: string) => {
       return <CodeWindow layoutKey={layoutkey} />;
     },
-    title: "code-editer",
+    title: "workbranch",
   });
 };
 export const TOKEN_CODE_WINDOW = "token.window.code";

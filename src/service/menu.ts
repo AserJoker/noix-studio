@@ -4,18 +4,27 @@ const useMenu = (
   emitter: IEventEmitter<IMenuEventInfo>,
   getTreeNode: (key: string) => IMenuOption | undefined
 ) => {
-  emitter.on("enable", (key) => {
+  const enbale = (key: string) => {
     const node = getTreeNode(key);
     if (node) {
       node.disabled = false;
     }
-  });
-  emitter.on("disable", (key) => {
+  };
+  const disable = (key: string) => {
     const node = getTreeNode(key);
     if (node) {
       node.disabled = true;
     }
-  });
-  emitter.emit("ready");
+  };
+  const init = () => {
+    emitter.on("enable", enbale);
+    emitter.on("disable", disable);
+    emitter.emit("ready");
+  };
+  const release = () => {
+    emitter.release("enable", enbale);
+    emitter.release("disable", disable);
+  };
+  return { init, release };
 };
 export { useMenu };

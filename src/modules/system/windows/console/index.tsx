@@ -1,8 +1,15 @@
 import { TOKEN_CONSOLE_EMITTER } from "@/const";
 import { useEventEmitter, useWindow } from "@/service";
-import { useConsole } from "@/service/console";
+import { useConsole } from "../../service/console";
 import { IConsoleEventInfo } from "@/types";
-import { defineComponent, nextTick, ref, watch } from "vue";
+import {
+  defineComponent,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+} from "vue";
 import style from "./index.module.scss";
 
 const ConsoleWindow = defineComponent({
@@ -11,7 +18,7 @@ const ConsoleWindow = defineComponent({
     const eli = ref<HTMLInputElement | null>();
     const $console = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
     $console.memory("ready");
-    const { messages } = useConsole($console);
+    const { messages, init, release } = useConsole($console);
     watch(messages, () => {
       nextTick(() => {
         if (el.value) {
@@ -24,6 +31,12 @@ const ConsoleWindow = defineComponent({
         eli.value.focus();
       }
     };
+    onMounted(() => {
+      init();
+    });
+    onUnmounted(() => {
+      release();
+    });
     return () => {
       return (
         <div ref={el} class={style.output} onClick={onClick}>

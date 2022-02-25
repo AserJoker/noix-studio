@@ -17,9 +17,19 @@ export const useBuffer = (emitter: IEventEmitter<IBufferEventInfo>) => {
   const changeBuffer = (name: string, value: string) => {
     buffers[name] = value;
   };
-  emitter.on("create", createBuffer);
-  emitter.on("dispose", disposeBuffer);
-  emitter.on("change", changeBuffer);
-  emitter.emit("ready");
-  return {};
+  const init = () => {
+    emitter.on("create", createBuffer);
+    emitter.on("dispose", disposeBuffer);
+    emitter.on("change", changeBuffer);
+    emitter.emit("ready");
+  };
+  const release = () => {
+    emitter.release("create", createBuffer);
+    emitter.release("dispose", disposeBuffer);
+    emitter.release("change", changeBuffer);
+  };
+  const getBuffer = (name: string) => {
+    return buffers[name];
+  };
+  return { getBuffer, init, release };
 };

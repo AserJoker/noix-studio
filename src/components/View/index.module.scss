@@ -55,6 +55,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    user-select: none;
   }
 }
 .view-action {
@@ -69,7 +70,8 @@
   background-color: #ddd;
 }
 .window {
-  overflow: auto;
+  overflow-y: hidden;
+  overflow-x: auto;
   flex-grow: 1;
   position: relative;
 }

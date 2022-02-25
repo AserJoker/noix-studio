@@ -1,8 +1,16 @@
-import { useWindow } from "@/service";
-import { IView } from "@/types";
-import { defineComponent, PropType, ref, watch } from "vue";
+import { useEventEmitter, useWindow } from "@/service";
+import { IView, IViewEventInfo } from "@/types";
+import {
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  PropType,
+  ref,
+  watch,
+} from "vue";
 import style from "./index.module.scss";
 import Dropdown from "@/widgets/dropdown";
+import { TOKEN_VIEW_EMITTER } from "@/const";
 
 const View = defineComponent({
   props: {
@@ -42,6 +50,18 @@ const View = defineComponent({
         currentWindow.value = classname;
       }
     };
+    const $view = useEventEmitter<IViewEventInfo>(TOKEN_VIEW_EMITTER);
+
+    onMounted(() => {
+      const release = $view.on("focusWindow", (key, classname) => {
+        if (key === props.node?.key && props.node?.type === "window") {
+          onChangeWindow(classname);
+        }
+      });
+      onUnmounted(() => {
+        release();
+      });
+    });
     return () => {
       if (!props.node) {
         return null;
@@ -49,7 +69,7 @@ const View = defineComponent({
       if (props.node.type === "window") {
         const win = getWindow(currentWindow.value);
         return (
-          <div class={`${style.view}`} ref={currentWindow.value}>
+          <div class={`${style.view}`} key={currentWindow.value}>
             <div class={style.switch}>
               <div class={style.title}>
                 <div class={style["title-text"]} key={currentWindow.value}>
@@ -88,7 +108,9 @@ const View = defineComponent({
                     })}
                     visible={visible.value}
                     onClose={() => (visible.value = false)}
-                    onSelect={(node) => onChangeWindow(node.key)}
+                    onSelect={(node) => {
+                      $view.emit("focusWindow", props.node?.key, node.key);
+                    }}
                   />
                 </div>
               )}
@@ -105,14 +127,18 @@ const View = defineComponent({
         if (props.node.direction === "row") {
           if (props.node.split) {
             children0Style.minWidth = props.node.split;
+            children0Style.width = props.node.split;
           } else {
             children0Style.minWidth = "50%";
+            children0Style.width = "50%";
           }
         } else if (props.node.direction === "column") {
           if (props.node.split) {
             children0Style.minHeight = props.node.split;
+            children0Style.height = props.node.split;
           } else {
             children0Style.minHeight = "50%";
+            children0Style.height = "50%";
           }
         }
         return (

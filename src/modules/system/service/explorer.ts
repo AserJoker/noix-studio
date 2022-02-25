@@ -27,8 +27,14 @@ export const useExplorer = (emitter: IEventEmitter<IExplorerEventInfo>) => {
       .filter((item) => item.check(node))
       .map((item) => item.opt);
   };
-  emitter.on("addContentmenuItem", addContentmenuItem);
-  emitter.on("addAction", addAction);
-  emitter.emit("ready");
-  return { getContextmenu, actions };
+  const init = () => {
+    emitter.on("addContentmenuItem", addContentmenuItem);
+    emitter.on("addAction", addAction);
+    emitter.emit("ready");
+  };
+  const release = () => {
+    emitter.release("addContentmenuItem", addContentmenuItem);
+    emitter.release("addAction", addAction);
+  };
+  return { getContextmenu, actions, init, release };
 };

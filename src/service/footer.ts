@@ -6,18 +6,26 @@ export const useFooter = (
   defaultValue: IFooterItem[]
 ) => {
   const items = reactive<IFooterItem[]>(defaultValue) as IFooterItem[];
-  emitter.on("insert", (item, lastKey) => {
+  const insert = (item: IFooterItem, lastKey?: string) => {
     if (!lastKey) {
       items.unshift(item);
     } else {
       const index = items.findIndex((i) => i.key === lastKey);
       items.splice(index + 1, 0, item);
     }
-  });
-  emitter.on("delete", (key) => {
+  };
+  const _delete = (key: string) => {
     const index = items.findIndex((i) => i.key === key);
     items.splice(index, 1);
-  });
-  emitter.emit("ready");
-  return { items };
+  };
+  const init = () => {
+    emitter.on("insert", insert);
+    emitter.on("delete", _delete);
+    emitter.emit("ready");
+  };
+  const release = () => {
+    emitter.release("insert", insert);
+    emitter.release("delete", _delete);
+  };
+  return { items, init, release };
 };

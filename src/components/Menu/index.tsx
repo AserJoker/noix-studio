@@ -1,4 +1,4 @@
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, onUnmounted, ref } from "vue";
 import style from "./index.module.scss";
 import { ITreeEventInfo, useEventEmitter, useMenu, useTree } from "@/service";
 import { IEventEmitter, IMenuEventInfo, IMenuOption } from "@/types";
@@ -10,14 +10,30 @@ const Menu = defineComponent({
       TOKEN_MENU_EMITTER
     );
     $menu.memory("ready");
-    const { tree, getTreeNode } = useTree(
-      $menu as IEventEmitter<ITreeEventInfo<IMenuOption>>,
-      { key: "root", children: menus, label: "root" }
+    const {
+      tree,
+      getTreeNode,
+      init: initTree,
+      release: releaseTree,
+    } = useTree($menu as IEventEmitter<ITreeEventInfo<IMenuOption>>, {
+      key: "root",
+      children: menus,
+      label: "root",
+    });
+    const { init, release } = useMenu(
+      $menu as IEventEmitter<IMenuEventInfo>,
+      getTreeNode
     );
-    useMenu($menu as IEventEmitter<IMenuEventInfo>, getTreeNode);
     const visible = ref(false);
     const active = ref("");
-
+    onMounted(() => {
+      initTree();
+      init();
+    });
+    onUnmounted(() => {
+      release();
+      releaseTree();
+    });
     return () => {
       const options: IMenuOption[] = tree.children || [];
       return (

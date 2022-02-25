@@ -4,11 +4,12 @@ import {
   onUnmounted,
   PropType,
   ref,
+  VNodeChild,
   watch,
 } from "vue";
 import style from "./index.module.scss";
 export interface IDropdownItem {
-  label: string;
+  label: string | (() => VNodeChild);
   key: string;
   children?: IDropdownItem[];
 }
@@ -58,7 +59,9 @@ const Dropdown = defineComponent({
               e.stopPropagation();
             }}
           >
-            <div>{node.label}</div>
+            <div>
+              {typeof node.label === "string" ? node.label : node.label()}
+            </div>
             {node.children && <div>{">"}</div>}
           </div>
           {expandKeys.value[level] === node.key && node.children && (

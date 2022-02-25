@@ -17,6 +17,7 @@ export type IViewEventInfo = {
   ) => void;
   addwindow: (key: string, classname: string) => void;
   dispose: (key: string) => void;
+  focusWindow: (key: string, classname: string) => void;
   ready: () => void;
 };
 export type IViewEventEmitter = IEventEmitter<IViewEventInfo>;

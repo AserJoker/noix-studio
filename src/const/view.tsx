@@ -2,8 +2,20 @@ import { IView } from "@/types";
 import { TOKEN_WELCOME_WINDOW } from "@/windows/welcome";
 
 export const view: IView = {
-  type: "window",
+  type: "group",
   key: "root",
-  classname: [TOKEN_WELCOME_WINDOW],
+  split: "0px",
+  direction: "column",
+  children: [
+    {
+      type: "window",
+      key: "empty",
+      classname: [],
+    },
+    {
+      type: "window",
+      key: "workbranch",
+      classname: [TOKEN_WELCOME_WINDOW],
+    },
+  ],
 };
-export const TOKEN_VIEW_EMITTER = "token.emitter.view";

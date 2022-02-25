@@ -54,5 +54,4 @@ const menus: IMenuOption[] = [
     ],
   },
 ];
-const TOKEN_MENU_EMITTER = "token.emitter.menu";
-export { menus, TOKEN_MENU_EMITTER };
+export { menus };

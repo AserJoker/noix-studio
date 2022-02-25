@@ -84,8 +84,7 @@ export const useTree = <T extends { children?: T[]; key: string }>(
       const index = parent.children.findIndex((item) => item.key === node.key);
       if (index !== -1) {
         parent.children.splice(index, 1, node);
-        const item = parent.children[index];
-        treeList[node.key] = () => item;
+        updateTreeList(parent);
       }
     } else {
       Object.keys(item).forEach((key) => {
@@ -94,6 +93,7 @@ export const useTree = <T extends { children?: T[]; key: string }>(
       Object.keys(node).forEach((key) => {
         item[key as keyof T] = node[key as keyof T];
       });
+      updateTreeList(tree);
     }
   };
   const upgradeItem = (node: Partial<T> & { key: string }) => {
@@ -104,16 +104,25 @@ export const useTree = <T extends { children?: T[]; key: string }>(
     Object.keys(node).forEach((key) => {
       item[key as keyof T] = node[key as keyof T] as T[keyof T];
     });
+    updateTreeList(item);
   };
-  emitter.on("insert", insertItem);
-  emitter.on("delete", deleteItem);
-  emitter.on("update", updateItem);
-  emitter.on("upgrade", upgradeItem);
+  const init = () => {
+    emitter.on("insert", insertItem);
+    emitter.on("delete", deleteItem);
+    emitter.on("update", updateItem);
+    emitter.on("upgrade", upgradeItem);
+  };
+  const release = () => {
+    emitter.release("insert", insertItem);
+    emitter.release("delete", deleteItem);
+    emitter.release("update", updateItem);
+    emitter.release("upgrade", upgradeItem);
+  };
   const getTreeNode = (key: string) => {
     return treeList[key]?.();
   };
   const getParentNode = (key: string) => {
     return treeList[parentInfo[key]]?.();
   };
-  return { tree, getTreeNode, getParentNode };
+  return { tree, getTreeNode, getParentNode, init, release };
 };

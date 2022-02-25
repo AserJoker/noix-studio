@@ -1,12 +1,7 @@
-import {
-  useWindow,
-  useEventEmitter,
-  ITreeEventInfo,
-  useTree,
-  useExplorer,
-} from "@/service";
+import { useWindow, useEventEmitter, ITreeEventInfo, useTree } from "@/service";
+import { useExplorer } from "../../service/explorer";
 import { IEventEmitter, IExplorerEventInfo, IResource } from "@/types";
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, onUnmounted, ref } from "vue";
 import Tree, { ITreeNode } from "@/widgets/tree";
 import { resourcesTree, TOKEN_EXPLORER_EMITTER } from "@/const";
 import Dropdown, { IDropdownItem } from "@/widgets/dropdown";
@@ -16,7 +11,12 @@ const ExplorerWindow = defineComponent({
       ITreeEventInfo<IResource> & IExplorerEventInfo
     >(TOKEN_EXPLORER_EMITTER);
     $explorer.memory("ready");
-    const { tree, getTreeNode } = useTree(
+    const {
+      tree,
+      getTreeNode,
+      init: initTree,
+      release: releaseTree,
+    } = useTree(
       $explorer as IEventEmitter<ITreeEventInfo<IResource & ITreeNode>>,
       {
         label: "project",
@@ -24,7 +24,7 @@ const ExplorerWindow = defineComponent({
         children: resourcesTree,
       }
     );
-    const { getContextmenu, actions } = useExplorer(
+    const { getContextmenu, actions, init, release } = useExplorer(
       $explorer as IEventEmitter<IExplorerEventInfo>
     );
     const selectedKeys = ref<string[]>([]);
@@ -32,6 +32,14 @@ const ExplorerWindow = defineComponent({
     const currentContextMenuNode = ref<IResource | null>(null);
     const showContextMenu = ref(false);
     const pos = ref({ x: 0, y: 0 });
+    onMounted(() => {
+      initTree();
+      init();
+    });
+    onUnmounted(() => {
+      release();
+      releaseTree();
+    });
     return () => {
       return (
         <>
@@ -42,6 +50,9 @@ const ExplorerWindow = defineComponent({
               selectedKeys.value = value.filter((val) => {
                 return !getTreeNode(val).children;
               });
+              if (selectedKeys.value.length) {
+                $explorer.emit("select", selectedKeys.value[0]);
+              }
             }}
             onUpdate={(node) => {
               $explorer.emit("upgrade", node);

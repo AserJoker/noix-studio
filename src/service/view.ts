@@ -106,10 +106,18 @@ export const useView = (
       });
     }
   };
-  emitter.on("split", splitView);
-  emitter.on("vsplit", vsplitView);
-  emitter.on("dispose", disposeView);
-  emitter.on("addwindow", addWindow);
-  emitter.emit("ready");
-  return { splitView, vsplitView, disposeView };
+  const init = () => {
+    emitter.on("split", splitView);
+    emitter.on("vsplit", vsplitView);
+    emitter.on("dispose", disposeView);
+    emitter.on("addwindow", addWindow);
+    emitter.emit("ready");
+  };
+  const release = () => {
+    emitter.release("split", splitView);
+    emitter.release("vsplit", vsplitView);
+    emitter.release("dispose", disposeView);
+    emitter.release("addwindow", addWindow);
+  };
+  return { splitView, vsplitView, disposeView, init, release };
 };
