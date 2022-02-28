@@ -1,7 +1,8 @@
-import { TOKEN_CONSOLE_EMITTER, TOKEN_VIEW_EMITTER } from "@/const";
+import { TOKEN_VIEW_EMITTER } from "@/const";
 import { useEventEmitter } from "@/service";
 import { IConsoleEventInfo, IViewEventInfo } from "@/types";
 import { onMounted } from "vue";
+import { TOKEN_CONSOLE_EMITTER } from "./const";
 
 const env: Record<string, string> = {};
 export const installConsole = () => {

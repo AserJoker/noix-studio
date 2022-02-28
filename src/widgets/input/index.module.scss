@@ -1,0 +1,23 @@
+.input-wrapper {
+  display: flex;
+  position: relative;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radus);
+  width: 100%;
+}
+.input {
+  height: var(--line-height);
+  width: 100%;
+  padding: var(--layout-padding);
+  font-size: var(--font-size);
+}
+.focus {
+  border-color: var(--border-color-focus);
+}
+.disabled {
+  cursor: not-allowed;
+  background-color: var(--color-disabled);
+  color: var(--font-color-second);
+}
+
+@import url("../common.scss");

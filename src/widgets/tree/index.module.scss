@@ -14,7 +14,7 @@
   border-bottom: 1px solid #ddd;
 }
 .item:hover {
-  background-color: #eeeeee;
+  background-color: var(--background-hover);
 }
 .label {
   display: flex;

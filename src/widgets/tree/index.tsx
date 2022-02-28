@@ -1,6 +1,6 @@
 import { defineComponent, PropType, ref, VNodeChild, watch } from "vue";
-import { ChevronDown, ChevronForward } from "@vicons/ionicons5";
 import style from "./index.module.scss";
+import Icon from "../icon";
 export interface ITreeNode {
   key: string;
   label: string;
@@ -112,11 +112,14 @@ const Tree = defineComponent({
             <div class={style.label}>
               {node.children && (
                 <div class={style.icon}>
-                  {expandKeys.value.includes(node.key) ? (
-                    <ChevronDown />
-                  ) : (
-                    <ChevronForward />
-                  )}
+                  <Icon
+                    namespace="noix"
+                    name={
+                      expandKeys.value.includes(node.key)
+                        ? "arrow-down"
+                        : "arrow-right"
+                    }
+                  />
                 </div>
               )}
               <div class={style.prefix}>

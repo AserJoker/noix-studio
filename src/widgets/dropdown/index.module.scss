@@ -1,21 +1,21 @@
 .dropdown {
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radus);
   display: flex;
   flex-direction: column;
   width: fit-content;
   min-width: 180px;
   position: absolute;
   z-index: 100;
+  padding: var(--layout-padding-t) 0;
+  background-color: var(--background-color);
 }
 .item {
-  background-color: #ffffff;
-  color: #111111;
-  border-bottom: 1px solid #ccc;
   cursor: pointer;
   position: relative;
 }
 .title:hover {
-  background-color: #cccccc;
+  background-color: var(--background-hover);
 }
 .item:last-child {
   border: none;
@@ -27,13 +27,16 @@
   left: calc(100%);
   top: calc(4px);
   min-width: 180px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radus);
+  padding: var(--layout-padding-t) 0;
+  background-color: var(--background-color);
 }
 .title {
   display: flex;
   justify-content: space-between;
-  padding: 2px 16px;
+  padding: var(--layout-padding);
+  user-select: none;
 }
 .bottom-left {
   left: 0;

@@ -1,25 +1,15 @@
-import { defineComponent, PropType } from "vue";
+import { defineComponent, inject, PropType, Ref } from "vue";
 import style from "./index.module.scss";
 const Button = defineComponent({
   props: {
-    type: {
-      type: String as PropType<
-        "default" | "primary" | "info" | "success" | "warning" | "error"
-      >,
-      default: "primary",
-    },
     size: {
       type: String as PropType<"small" | "medium" | "large">,
-      default: "medium",
     },
-    text: {
-      type: Boolean,
-    },
-    disabeld: {
-      type: Boolean,
-    },
-    dashed: {
-      type: Boolean,
+    type: {
+      type: String as PropType<
+        "default" | "primary" | "success" | "warning" | "notice" | "danger"
+      >,
+      default: "default",
     },
   },
   emits: {
@@ -28,19 +18,17 @@ const Button = defineComponent({
     },
   },
   setup(props, { emit, slots }) {
+    const size = inject<Ref<"small" | "medium" | "large">>("size");
     const onClick = (e: MouseEvent) => {
       emit("click", e);
     };
     return () => {
-      const classes = ["button"];
-      classes.push(props.type);
-      classes.push(props.size);
-      if (props.dashed) {
-        classes.push("dashed");
-      }
+      const _size = size?.value || props.size || "medium";
       return (
         <button
-          class={classes.map((name) => style[name]).join(" ")}
+          class={`${style.button} ${style[_size]} ${
+            style[`type-${props.type}`]||''
+          }`}
           onClick={onClick}
         >
           {slots.default && slots.default()}

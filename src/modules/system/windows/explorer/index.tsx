@@ -1,10 +1,12 @@
 import { useWindow, useEventEmitter, ITreeEventInfo, useTree } from "@/service";
 import { useExplorer } from "../../service/explorer";
-import { IEventEmitter, IExplorerEventInfo, IResource } from "@/types";
+import { IEventEmitter } from "@/types";
 import { defineComponent, onMounted, onUnmounted, ref } from "vue";
 import Tree, { ITreeNode } from "@/widgets/tree";
-import { resourcesTree, TOKEN_EXPLORER_EMITTER } from "@/const";
 import Dropdown, { IDropdownItem } from "@/widgets/dropdown";
+import { IExplorerEventInfo } from "../../types/IExplorerEventEmitter";
+import { IResource } from "../../types/IResource";
+import { TOKEN_EXPLORER_EMITTER } from "../../const";
 const ExplorerWindow = defineComponent({
   setup() {
     const $explorer = useEventEmitter<
@@ -21,7 +23,7 @@ const ExplorerWindow = defineComponent({
       {
         label: "project",
         key: "root",
-        children: resourcesTree,
+        children: [],
       }
     );
     const { getContextmenu, actions, init, release } = useExplorer(

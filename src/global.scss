@@ -1,3 +1,4 @@
+//@import url("https://at.alicdn.com/t/font_3209065_53yi7je2fft.css?spm=a313x.7781069.1998910419.47&file=font_3209065_53yi7je2fft.css");
 * {
   margin: 0;
   padding: 0;
@@ -13,4 +14,62 @@ body {
   width: 24px;
   height: 100%;
   padding: 4px;
+}
+:root {
+  --font-size-s: 12px;
+  --font-size-m: 16px;
+  --font-size-l: 20px;
+
+  --line-height-s: calc(1.5 * var(--font-size-s));
+  --line-height-m: calc(1.5 * var(--font-size-m));
+  --line-height-l: calc(1.5 * var(--font-size-l));
+
+  --layout-padding-l: 8px;
+  --layout-padding-r: 8px;
+  --layout-padding-t: 4px;
+  --layout-padding-b: 4px;
+  --layout-padding: var(--layout-padding-t) var(--layout-padding-r)
+    var(--layout-padding-b) var(--layout-padding-l);
+
+  --font-color-default: rgb(98, 96, 102);
+  --font-color-second: #c9ccd2;
+  --font-color-highlight:#ffffff;
+  --font-color: var(--font-color-default);
+
+  --border-color-default: rgb(229, 231, 235);
+  --border-color: var(--border-color-default);
+  --border-radus: 4px;
+  --border-color-focus: var(--color-primary);
+
+  --background-hover: #f5f7fa;
+  --background-color-default: #ffffff;
+  --background-color: var(--background-color-default);
+
+  --color-error: #f56c6c;
+
+  --color-danger: #f56c6c;
+  --color-warning: #e6a23c;
+  --color-success: #67c23a;
+  --color-notice: var(--color-primary);
+  --color-primary: #409eff;
+  --color-second: #f5f7fa;
+
+  --color-danger-hover: #f89898;
+  --color-warning-hover: #eebe77;
+  --color-success-hover: #95d475;
+  --color-notice-hover: var(--color-primary-hover);
+  --color-primary-hover: #79bbff;
+
+  --color-disabled: var(--color-second);
+
+  --form-item-width: 240px;
+}
+@font-face {
+  font-family: "noix-icon"; /* Project id 3209065 */
+  src: url("//at.alicdn.com/t/font_3209065_53yi7je2fft.woff2?t=1646024003636")
+      format("woff2"),
+    url("//at.alicdn.com/t/font_3209065_53yi7je2fft.woff?t=1646024003636")
+      format("woff"),
+    url("//at.alicdn.com/t/font_3209065_53yi7je2fft.ttf?t=1646024003636")
+      format("truetype");
 }

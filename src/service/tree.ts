@@ -39,9 +39,9 @@ export const useTree = <T extends { children?: T[]; key: string }>(
     }
   };
   const clearChildren = (item: T) => {
+    item.children && item.children.forEach((c) => clearChildren(c));
     delete treeList[item.key as string];
     delete parentInfo[item.key as string];
-    item.children && item.children.forEach((c) => clearChildren(c));
   };
   const insertItem = (node: T, parentKey: string, lastKey?: string) => {
     const parent = treeList[parentKey]?.();

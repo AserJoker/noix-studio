@@ -1,4 +1,3 @@
-import { TOKEN_CONSOLE_EMITTER } from "@/const";
 import { useEventEmitter, useWindow } from "@/service";
 import { useConsole } from "../../service/console";
 import { IConsoleEventInfo } from "@/types";
@@ -11,6 +10,7 @@ import {
   watch,
 } from "vue";
 import style from "./index.module.scss";
+import { TOKEN_CONSOLE_EMITTER } from "../../const";
 
 const ConsoleWindow = defineComponent({
   setup() {

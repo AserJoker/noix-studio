@@ -1,34 +1,54 @@
 .button {
-  padding: 0 16px;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 2px;
+  --layout-padding: 8px 16px;
+  cursor: pointer;
+  background-color: var(--background-color);
+  padding: var(--layout-padding);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radus);
+  font-size: var(--font-size);
+  color: var(--font-color);
 }
-.dashed {
-  border-style: dashed;
+.button:hover {
+  --background-color: var(--color-second);
 }
-.medium {
-  font-size: 16px;
-  line-height: calc(1.5 * 16px);
+.type-danger {
+  --border-color: var(--color-danger);
+  --background-color: var(--color-danger);
+  --font-color: var(--font-color-highlight);
 }
-.small {
-  line-height: calc(1.5 * 12px);
-  font-size: 12px;
+.type-danger:hover {
+  --background-color: var(--color-danger-hover);
 }
-.large {
-  font-size: 20px;
-  line-height: calc(1.5 * 20px);
+.type-warning {
+  --border-color: var(--color-warning);
+  --background-color: var(--color-warning);
+  --font-color: var(--font-color-highlight);
 }
-.default {
-  border-color: #cccccc;
-  color: rgba(0, 0, 0, 0.85);
+.type-warning:hover {
+  --background-color: var(--color-warning-hover);
 }
-.default:hover {
-  color: #40a9ff;
-  border-color: #40a9ff;
+.type-success {
+  --border-color: var(--color-success);
+  --background-color: var(--color-success);
+  --font-color: var(--font-color-highlight);
 }
-.primary {
-  border-color: #1890ff;
-  background-color: #1890ff;
-  color: #ffffff;
+.type-success:hover {
+  --background-color: var(--color-success-hover);
 }
+.type-notice {
+  --border-color: var(--color-notice);
+  --background-color: var(--color-notice);
+  --font-color: var(--font-color-highlight);
+}
+.type-notice:hover {
+  --background-color: var(--color-notice-hover);
+}
+.type-primary {
+  --border-color: var(--color-primary);
+  --background-color: var(--color-primary);
+  --font-color: var(--font-color-highlight);
+}
+.type-primary:hover {
+  --background-color: var(--color-primary-hover);
+}
+@import url("../common.scss");

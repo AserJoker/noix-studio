@@ -1,7 +1,7 @@
 import { IView } from "@/types";
-import { TOKEN_CODE_WINDOW } from "../code";
 import { TOKEN_CONSOLE_WINDOW } from "../console";
 import { TOKEN_EXPLORER_WINDOW } from "../explorer";
+import { TOKEN_WORKBRANCH_WINDOW } from "../workbranch";
 
 export const view: IView = {
   key: "root",
@@ -29,7 +29,7 @@ export const view: IView = {
         {
           type: "window",
           key: "workbranch",
-          classname: [TOKEN_CODE_WINDOW],
+          classname: [TOKEN_WORKBRANCH_WINDOW],
         },
       ],
     },

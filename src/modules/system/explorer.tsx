@@ -1,14 +1,13 @@
-import {
-  TOKEN_CONSOLE_EMITTER,
-  TOKEN_BUFFER_EMITTER,
-  TOKEN_EXPLORER_EMITTER,
-} from "@/const";
+import { TOKEN_BUFFER_EMITTER } from "@/const";
 import { useEventEmitter, ITreeEventInfo } from "@/service";
 import { useBuffer } from "@/service/buffer";
-import { IConsoleEventInfo, IExplorerEventInfo, IResource } from "@/types";
+import { IConsoleEventInfo } from "@/types";
 import { IBufferEventInfo } from "@/types/IBufferEventEmitter";
 import { TrashOutline } from "@vicons/ionicons5";
 import { onMounted, onUnmounted } from "vue";
+import { TOKEN_CONSOLE_EMITTER, TOKEN_EXPLORER_EMITTER } from "./const";
+import { IExplorerEventInfo } from "./types/IExplorerEventEmitter";
+import { IResource } from "./types/IResource";
 export const installExplorer = () => {
   const $console = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
   const $buffer = useEventEmitter<IBufferEventInfo>(TOKEN_BUFFER_EMITTER);

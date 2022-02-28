@@ -1,6 +1,8 @@
-import { IEventEmitter, IExplorerEventInfo, IResource } from "@/types";
+import { IEventEmitter } from "@/types";
 import { IDropdownItem } from "@/widgets/dropdown";
 import { reactive, VNodeChild } from "vue";
+import { IExplorerEventInfo } from "../types/IExplorerEventEmitter";
+import { IResource } from "../types/IResource";
 
 export const useExplorer = (emitter: IEventEmitter<IExplorerEventInfo>) => {
   const contextmenuItems: {

@@ -5,10 +5,12 @@ import { installConsole } from "./console";
 import { installExplorer } from "./explorer";
 import { installMenu } from "./menu";
 import { installNewTemplateProejctWindow } from "./windows/new-template-project";
+import { installWorkbranchWindow } from "./windows/workbranch";
 
 const installWindow = () => {
   installConsoleWindow();
   installExplorerWindow();
+  installWorkbranchWindow();
   installCodeWindow();
   installNewTemplateProejctWindow();
 };

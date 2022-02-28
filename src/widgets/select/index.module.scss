@@ -1,0 +1,31 @@
+.select {
+  height: var(--line-height);
+  display: flex;
+  justify-content: space-between;
+  padding: var(--layout-padding);
+  font-size: var(--font-size);
+}
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radus);
+}
+.selected {
+  color: var(--color-primary);
+}
+.focus {
+  --border-color: var(--border-color-focus);
+}
+.label {
+  display: flex;
+  align-items: center;
+}
+
+.disabled {
+  cursor: not-allowed;
+  background-color: var(--color-disabled);
+  color: var(--font-color-second);
+}
+
+@import url("../common.scss");

@@ -1,5 +1,31 @@
+* {
+  background-color: transparent;
+}
 button {
   background-color: transparent;
-  border: none;
+  border: unset;
   cursor: pointer;
+  color: unset;
+}
+button:focus {
+  outline: none;
+}
+
+input {
+  outline: none;
+  background-color: unset;
+  border: unset;
+  color: unset;
+}
+input:focus {
+  outline: none;
+}
+body {
+  font-size: var(--font-size-m);
+  line-height: var(--line-height-m);
+  color: var(--font-color-default);
+  will-change: auto;
+}
+div {
+  outline: none;
 }

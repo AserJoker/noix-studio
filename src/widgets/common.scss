@@ -1,0 +1,13 @@
+.small {
+  --font-size: var(--font-size-s);
+  --line-height: calc(var(--font-size-s) * 1.5);
+}
+.medium {
+  --font-size: var(--font-size-m);
+  --line-height: calc(var(--font-size-m) * 1.5);
+}
+
+.large {
+  --font-size: var(--font-size-l);
+  --line-height: calc(var(--font-size-l) * 1.5);
+}

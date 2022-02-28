@@ -7,6 +7,7 @@ import {
   VNodeChild,
   watch,
 } from "vue";
+import Icon from "../icon";
 import style from "./index.module.scss";
 export interface IDropdownItem {
   label: string | (() => VNodeChild);
@@ -29,6 +30,16 @@ const Dropdown = defineComponent({
     y: {
       type: Number,
     },
+    autoClose: {
+      type: Boolean,
+      default: true,
+    },
+    label: {
+      type: Function as PropType<(node: IDropdownItem) => VNodeChild>,
+    },
+    width: {
+      type: [String, Number] as PropType<string | number>,
+    },
   },
   emits: {
     select: (node: IDropdownItem) => {
@@ -43,6 +54,8 @@ const Dropdown = defineComponent({
     const pos = ref("bottom-left");
     const el = ref<HTMLDivElement | null>(null);
     const renderItem = (node: IDropdownItem, level = 0) => {
+      const width =
+        typeof props.width === "number" ? `${props.width}px` : props.width;
       return (
         <div key={node.key} class={style.item}>
           <div
@@ -54,18 +67,28 @@ const Dropdown = defineComponent({
               if (!node.children) {
                 emit("select", node);
                 expandKeys.value = {};
-                emit("close");
+                if (props.autoClose) {
+                  emit("close");
+                }
               }
               e.stopPropagation();
             }}
           >
             <div>
-              {typeof node.label === "string" ? node.label : node.label()}
+              {(props.label && props.label(node)) ||
+                (typeof node.label === "string" ? node.label : node.label())}
             </div>
-            {node.children && <div>{">"}</div>}
+            {node.children && (
+              <div>
+                <Icon namespace="noix" name="arrow-right" />
+              </div>
+            )}
           </div>
           {expandKeys.value[level] === node.key && node.children && (
-            <div class={style.children}>
+            <div
+              class={style.children}
+              style={width ? { minWidth: width } : undefined}
+            >
               {node.children.map((c) => renderItem(c, level + 1))}
             </div>
           )}
@@ -102,6 +125,8 @@ const Dropdown = defineComponent({
     });
     return () => {
       const { visible, dataSource } = props;
+      const width =
+        typeof props.width === "number" ? `${props.width}px` : props.width;
       if (!visible) {
         return null;
       }
@@ -109,7 +134,7 @@ const Dropdown = defineComponent({
         <div
           {...attrs}
           class={`${style.dropdown} ${style[pos.value]} ${attrs.class || ""}`}
-          style={{ left: props.x + "px", top: props.y + "px" }}
+          style={{ left: props.x + "px", top: props.y + "px", width: width }}
           ref={el}
         >
           {dataSource.map((item) => renderItem(item))}

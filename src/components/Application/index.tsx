@@ -3,7 +3,6 @@ import style from "./index.module.scss";
 import Header from "@/components/Header";
 import Content from "@/components/Content";
 import Footer from "../Footer";
-import system from "@/modules/system";
 import { installWelcomeWindow } from "@/windows/welcome";
 export default defineComponent({
   props: {
@@ -19,7 +18,6 @@ export default defineComponent({
     props.modules.forEach((m) => {
       m.install();
     });
-    system.install();
     return () => (
       <div class={style.application}>
         <div class={style.header}>

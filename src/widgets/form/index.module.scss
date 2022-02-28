@@ -1,0 +1,61 @@
+.form {
+  display: flex;
+}
+.form-normal {
+  flex-direction: column;
+}
+.form-item {
+  display: flex;
+  position: relative;
+  padding: var(--layout-padding);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  .label {
+    padding: var(--layout-padding);
+  }
+  .item {
+    min-width: var(--form-item-width);
+  }
+  .right-align {
+    text-align: right;
+  }
+  .help {
+    font-size: var(--font-size-help);
+    color: var(--font-color-help);
+  }
+  .status-normal {
+    --font-color-help: var(--font-color-second);
+  }
+  .status-error {
+    --font-color-help: var(--color-error);
+    --border-color: var(--color-error);
+    --border-color-focus: var(--color-error);
+  }
+  .status-warning {
+    --font-color-help: var(--color-warning);
+    --border-color: var(--color-warning);
+    --border-color-focus: var(--color-warning);
+  }
+  .status-notice {
+    --font-color-help: var(--color-notice);
+    --border-color: var(--color-notice);
+    --border-color-focus: var(--color-notice);
+  }
+}
+.top-item {
+  flex-direction: column;
+}
+.form-inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+@import url("../common.scss");
+.small {
+  --font-size-help: calc(var(--font-size-s) * 0.8);
+}
+.medium {
+  --font-size-help: calc(var(--font-size-m) * 0.8);
+}
+.large {
+  --font-size-help: calc(var(--font-size-l) * 0.8);
+}

@@ -1,4 +1,4 @@
-import { IEventEmitter } from "./IEventEmitter";
+import { IEventEmitter } from "../../../types/IEventEmitter";
 
 export type IConsoleEventInfo = {
   output: (msg: string, type: string) => void;

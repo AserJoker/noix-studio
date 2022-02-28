@@ -6,6 +6,6 @@ export * from "./IView";
 export * from "./IMessage";
 export * from "./IFooterEventEmitter";
 export * from "./IViewEventEmitter";
-export * from "./IConsoleEventEmitter";
+export * from "../modules/system/types/IConsoleEventEmitter";
 export * from "./IResource";
 export * from "./IExplorerEventEmitter";

@@ -1,8 +1,4 @@
-import {
-  TOKEN_CONSOLE_EMITTER,
-  TOKEN_MENU_EMITTER,
-  TOKEN_VIEW_EMITTER,
-} from "@/const";
+import { TOKEN_MENU_EMITTER, TOKEN_VIEW_EMITTER } from "@/const";
 import { useEventEmitter, ITreeEventInfo } from "@/service";
 import {
   IConsoleEventInfo,
@@ -11,6 +7,7 @@ import {
   IView,
 } from "@/types";
 import { onMounted, onUnmounted } from "vue";
+import { TOKEN_CONSOLE_EMITTER } from "./const";
 import { TOKEN_NEW_TEMPLATE_PROJECT_WINDOW } from "./windows/new-template-project";
 
 export const installMenu = () => {
