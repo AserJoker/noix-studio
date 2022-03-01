@@ -28,7 +28,7 @@ const Input = defineComponent({
   },
   setup(props, { emit }) {
     const focus = ref(false);
-    const size = inject<Ref<"small" | "medium" | "large">>("size");
+    const size = inject<Ref<"small" | "medium" | "large"> | null>("size", null);
     return () => {
       const _size = size?.value || props.size || "medium";
       return (

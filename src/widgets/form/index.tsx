@@ -1,4 +1,6 @@
 import {
+  Component,
+  DefineComponent,
   defineComponent,
   inject,
   PropType,
@@ -9,6 +11,12 @@ import {
 } from "vue";
 import Icon from "../icon";
 import style from "./index.module.scss";
+export interface IFormProps {
+  labelWidth?: string | number;
+  labelAlign?: "left" | "right" | "top";
+  inline?: boolean;
+  size?: "small" | "medium" | "large";
+}
 const Form = defineComponent({
   props: {
     labelWidth: {
@@ -68,6 +76,15 @@ const Form = defineComponent({
     };
   },
 });
+export interface IFormItemProps {
+  label?: string;
+  labelWidth?: string | number;
+  labelAlign?: "left" | "right" | "top";
+  required?: boolean;
+  status?: "error" | "warning" | "success" | "notice" | "normal";
+  help?: string;
+  size?: "small" | "medium" | "large";
+}
 export const FormItem = defineComponent({
   props: {
     label: {
@@ -98,9 +115,12 @@ export const FormItem = defineComponent({
     },
   },
   setup(props, { slots }) {
-    const labelWidth = inject<Ref<number | string>>("labelWidth");
-    const labelAlign = inject<Ref<"left" | "right" | "top">>("labelAlign");
-    const size = inject<Ref<"small" | "medium" | "large">>("size");
+    const labelWidth = inject<Ref<number | string> | null>("labelWidth", null);
+    const labelAlign = inject<Ref<"left" | "right" | "top"> | null>(
+      "labelAlign",
+      null
+    );
+    const size = inject<Ref<"small" | "medium" | "large"> | null>("size", null);
 
     return () => {
       const _labelWidth =
@@ -108,12 +128,11 @@ export const FormItem = defineComponent({
           ? labelWidth?.value
           : props.labelWidth) || 80;
 
-      const minWidth =
+      const maxWidth =
         typeof _labelWidth === "string" ? _labelWidth : `${_labelWidth}px`;
 
-      const _labelAlign = labelAlign?.value || props.labelAlign || "left";
+      const _labelAlign = props.labelAlign || labelAlign?.value || "left";
       const _size = size?.value || props.size || "medium";
-
       const classes = [style["form-item"]];
       classes.push(style[`${_labelAlign}-item`]);
       classes.push(style[_size]);
@@ -122,7 +141,8 @@ export const FormItem = defineComponent({
           <label
             class={`${style.label} ${style[_labelAlign] || ""}`}
             style={{
-              minWidth,
+              maxWidth,
+              width: maxWidth,
             }}
           >
             <div>
@@ -153,3 +173,120 @@ export const FormItem = defineComponent({
   },
 });
 export default Form;
+interface IFromParam {
+  formProps?: IFormProps;
+  items: (IFormItemProps & {
+    Component: Component;
+    name: string;
+  })[];
+  validate?: (
+    name: string,
+    value: unknown,
+    record: Record<string, unknown>
+  ) => Promise<{ success: boolean; message: string }>;
+}
+export const useForm = ({ formProps = {}, items, validate }: IFromParam) => {
+  return defineComponent({
+    emits: {
+      "update:value": (val: Record<string, unknown>) => {
+        return typeof val === "object";
+      },
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      change: (name: string, _value: unknown) => {
+        return typeof name === "string";
+      },
+    },
+    expose: ["setHelp", "validate"],
+    setup(props, { expose }) {
+      const record = ref<Record<string, unknown>>({});
+      const help = ref<
+        Record<
+          string,
+          {
+            help: string;
+            type: "error" | "warning" | "success" | "notice" | "normal";
+          }
+        >
+      >({});
+      const setHelp = (
+        name: string,
+        status: "error" | "warning" | "success" | "notice" | "normal",
+        message: string
+      ) => {
+        help.value[name] = {
+          type: status,
+          help: message,
+        };
+      };
+      expose({
+        setHelp,
+      });
+      const _validate = async () => {
+        const validateResult: Record<
+          string,
+          { success: boolean; message: string }
+        > = {};
+        await Promise.all(
+          items.map(async (item) => {
+            const value = record.value[item.name];
+            if (item.required) {
+              if (
+                value === undefined ||
+                value === null ||
+                value === [] ||
+                value === ""
+              ) {
+                validateResult[item.name] = {
+                  success: false,
+                  message: `${item.label || item.name} is required`,
+                };
+                return;
+              }
+            }
+            validate &&
+              (validateResult[item.name] = await validate(
+                item.name,
+                value,
+                record.value
+              ));
+          })
+        );
+        Object.keys(validateResult)
+          .filter((key) => validateResult[key])
+          .forEach((key) => {
+            if (!validateResult[key].success) {
+              setHelp(key, "error", validateResult[key].message);
+            }
+          });
+        return validateResult;
+      };
+      return { help, record, setHelp, validate: _validate };
+    },
+    render() {
+      const { help, record } = this;
+      return (
+        <Form {...formProps}>
+          {items.map((item) => {
+            const { Component, name, ...others } = item;
+            const FieldComp = Component as DefineComponent<{
+              value: unknown;
+              "onUpdate:value"?: (val: unknown) => void;
+            }>;
+            return (
+              <FormItem
+                {...others}
+                help={help[name]?.help}
+                status={help[name]?.type}
+              >
+                <FieldComp
+                  value={record[name]}
+                  onUpdate:value={(val) => (record[name] = val)}
+                />
+              </FormItem>
+            );
+          })}
+        </Form>
+      );
+    },
+  });
+};

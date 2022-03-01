@@ -5,13 +5,13 @@
 .item {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border-color);
 }
 .selectedItem {
   display: flex;
   justify-content: space-between;
-  background-color: #eee;
-  border-bottom: 1px solid #ddd;
+  background-color: var(--color-second);
+  border-bottom: 1px solid var(--border-color);
 }
 .item:hover {
   background-color: var(--background-hover);
@@ -51,7 +51,7 @@
   border-radius: 6px;
 }
 .action:hover {
-  background-color: #fdfdfd;
+  background-color: var(--color-second);
   width: 24px;
 }
 .input {

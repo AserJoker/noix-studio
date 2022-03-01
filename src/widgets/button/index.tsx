@@ -18,7 +18,7 @@ const Button = defineComponent({
     },
   },
   setup(props, { emit, slots }) {
-    const size = inject<Ref<"small" | "medium" | "large">>("size");
+    const size = inject<Ref<"small" | "medium" | "large"> | null>("size", null);
     const onClick = (e: MouseEvent) => {
       emit("click", e);
     };
@@ -27,7 +27,7 @@ const Button = defineComponent({
       return (
         <button
           class={`${style.button} ${style[_size]} ${
-            style[`type-${props.type}`]||''
+            style[`type-${props.type}`] || ""
           }`}
           onClick={onClick}
         >

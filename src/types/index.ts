@@ -7,5 +7,4 @@ export * from "./IMessage";
 export * from "./IFooterEventEmitter";
 export * from "./IViewEventEmitter";
 export * from "../modules/system/types/IConsoleEventEmitter";
-export * from "./IResource";
-export * from "./IExplorerEventEmitter";
+export * from "./IBuffer";

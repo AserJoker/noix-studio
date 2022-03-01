@@ -4,6 +4,7 @@ import { IView, IViewEventInfo } from "@/types";
 import Button from "@/widgets/button";
 import Input from "@/widgets/input";
 import Select from "@/widgets/select";
+import Checkbox from "@/widgets/checkbox";
 import Form, { FormItem } from "@/widgets/form";
 import { defineComponent, ref } from "vue";
 import { TOKEN_CODE_WINDOW } from "../code";
@@ -43,6 +44,20 @@ const NewTemplateProjectWindow = defineComponent({
                     {
                       label: "type2",
                       value: "type2",
+                    },
+                  ]}
+                />
+              </FormItem>
+              <FormItem label="radio:">
+                <Checkbox
+                  options={[
+                    {
+                      label: "aaaa",
+                      key: "aaa",
+                    },
+                    {
+                      label: "bbb",
+                      key: "bbb",
                     },
                   ]}
                 />

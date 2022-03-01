@@ -1,0 +1,17 @@
+.radio {
+  display: flex;
+  .item {
+    display: flex;
+    align-items: center;
+    padding: var(--layout-padding);
+    cursor: pointer;
+    .label {
+      cursor: pointer;
+      font-size: var(--font-size);
+    }
+  }
+}
+@import url("../common.scss");
+.disabled {
+  background-color: unset;
+}

@@ -11,3 +11,9 @@
   --font-size: var(--font-size-l);
   --line-height: calc(var(--font-size-l) * 1.5);
 }
+
+.disabled {
+  cursor: not-allowed;
+  background-color: var(--color-disabled);
+  color: var(--font-color-second);
+}

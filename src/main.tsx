@@ -2,7 +2,7 @@ import { createApp, defineComponent, onMounted, ref } from "vue";
 import Application from "./components/Application";
 import "./global.scss";
 import "./widgets/reset.scss";
-import "https://at.alicdn.com/t/font_3209065_fx4iksyrec.js?spm=a313x.7781069.1998910419.166&file=font_3209065_fx4iksyrec.js";
+import "//at.alicdn.com/t/font_3209065_7pwi96badis.js";
 const modulePaths = import.meta.glob("./modules/*/index.*");
 createApp(
   defineComponent(() => {

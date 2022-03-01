@@ -14,10 +14,5 @@
 .focus {
   border-color: var(--border-color-focus);
 }
-.disabled {
-  cursor: not-allowed;
-  background-color: var(--color-disabled);
-  color: var(--font-color-second);
-}
 
 @import url("../common.scss");

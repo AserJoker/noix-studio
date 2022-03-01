@@ -71,7 +71,7 @@ const Select = defineComponent({
         }
       }
     );
-    const size = inject<Ref<"small" | "medium" | "large">>("size");
+    const size = inject<Ref<"small" | "medium" | "large"> | null>("size", null);
     const onRenderLabel = (node: IDropdownItem) => {
       const label = typeof node.label === "string" ? node.label : node.label();
       const list =
