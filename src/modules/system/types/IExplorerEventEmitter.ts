@@ -4,6 +4,7 @@ import { IResource } from "./IResource";
 
 export type IExplorerEventInfo = {
   select: (key: string) => void;
+  unselect: (key: string) => void;
   contextmenu: (menukey: string, node: IResource) => void;
   action: (action: string, node: IResource) => void;
   addContentmenuItem: (
@@ -15,4 +16,6 @@ export type IExplorerEventInfo = {
     render: (node: IResource) => VNodeChild;
   }) => void;
   ready: () => void;
+  expand: (key: string) => void;
+  unexpand: (key: string) => void;
 };

@@ -178,6 +178,7 @@ interface IFromParam {
   items: (IFormItemProps & {
     Component: Component;
     name: string;
+    extraProps?: Record<string, unknown>;
   })[];
   validate?: (
     name: string,
@@ -187,6 +188,11 @@ interface IFromParam {
 }
 export const useForm = ({ formProps = {}, items, validate }: IFromParam) => {
   return defineComponent({
+    props: {
+      value: {
+        type: Object as PropType<Record<string, unknown>>,
+      },
+    },
     emits: {
       "update:value": (val: Record<string, unknown>) => {
         return typeof val === "object";
@@ -199,6 +205,13 @@ export const useForm = ({ formProps = {}, items, validate }: IFromParam) => {
     expose: ["setHelp", "validate"],
     setup(props, { expose }) {
       const record = ref<Record<string, unknown>>({});
+      watch(
+        () => props.value,
+        () => {
+          record.value = props.value || {};
+        },
+        { immediate: true }
+      );
       const help = ref<
         Record<
           string,
@@ -267,11 +280,12 @@ export const useForm = ({ formProps = {}, items, validate }: IFromParam) => {
       return (
         <Form {...formProps}>
           {items.map((item) => {
-            const { Component, name, ...others } = item;
+            const { Component, extraProps = {}, name, ...others } = item;
             const FieldComp = Component as DefineComponent<{
               value: unknown;
               "onUpdate:value"?: (val: unknown) => void;
             }>;
+
             return (
               <FormItem
                 {...others}
@@ -279,8 +293,15 @@ export const useForm = ({ formProps = {}, items, validate }: IFromParam) => {
                 status={help[name]?.type}
               >
                 <FieldComp
+                  {...extraProps}
                   value={record[name]}
-                  onUpdate:value={(val) => (record[name] = val)}
+                  onUpdate:value={(val) => {
+                    const _record = { ...record };
+                    if (this.$props.value === undefined) {
+                      record[name] = val;
+                    }
+                    this.$emit("update:value", _record);
+                  }}
                 />
               </FormItem>
             );

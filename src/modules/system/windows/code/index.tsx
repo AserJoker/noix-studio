@@ -46,7 +46,7 @@ const CodeWindow = defineComponent({
         });
         $buffer.on("focus", (n, v) => {
           name.value = n;
-          editor.setValue(v || "");
+          editor.setValue(v.buf || "");
         });
       }
     });

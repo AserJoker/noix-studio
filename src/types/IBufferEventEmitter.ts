@@ -6,4 +6,5 @@ export type IBufferEventInfo = {
   dispose: (name: string) => void;
   ready: () => void;
   focus: (name: string, buf: IBuffer) => void;
+  blur: (name: string, buf: IBuffer) => void;
 };

@@ -1,15 +1,13 @@
 import { TOKEN_BUFFER_EMITTER } from "@/const";
 import { useEventEmitter, ITreeEventInfo } from "@/service";
 import { useBuffer } from "@/service/buffer";
-import { IConsoleEventInfo } from "@/types";
 import { IBufferEventInfo } from "@/types/IBufferEventEmitter";
 import { TrashOutline } from "@vicons/ionicons5";
 import { onMounted, onUnmounted } from "vue";
-import { TOKEN_CONSOLE_EMITTER, TOKEN_EXPLORER_EMITTER } from "./const";
+import { TOKEN_EXPLORER_EMITTER } from "./const";
 import { IExplorerEventInfo } from "./types/IExplorerEventEmitter";
 import { IResource } from "./types/IResource";
 export const installExplorer = () => {
-  const $console = useEventEmitter<IConsoleEventInfo>(TOKEN_CONSOLE_EMITTER);
   const $buffer = useEventEmitter<IBufferEventInfo>(TOKEN_BUFFER_EMITTER);
   const { getBuffer, init, release } = useBuffer($buffer);
   const $explorer = useEventEmitter<
@@ -19,10 +17,22 @@ export const installExplorer = () => {
     $explorer.emit(
       "addContentmenuItem",
       {
-        label: "查看",
-        key: "view",
+        label: "新建组件",
+        key: "new-component",
       },
-      () => true
+      (node: IResource) => {
+        return node.children;
+      }
+    );
+    $explorer.emit(
+      "addContentmenuItem",
+      {
+        label: "expand",
+        key: "expand",
+      },
+      (node: IResource) => {
+        return node.children;
+      }
     );
     $explorer.emit("addAction", {
       key: "delete",
@@ -39,13 +49,32 @@ export const installExplorer = () => {
     });
   };
   const onContextMenu = (key: string, node: IResource) => {
-    if (key === "view") {
-      $console.emit("output", node.label);
+    if (key === "new-component") {
+      if (node.children) {
+        const childrenKey = `${key}-${node.children.length}`;
+        const newNode: IResource = {
+          label: "no name",
+          key: childrenKey,
+        };
+        $explorer.emit(
+          "insert",
+          newNode,
+          node.key,
+          node.children[node.children.length - 1]?.key
+        );
+        $explorer.emit("expand", node.key);
+        $explorer.emit("select", childrenKey);
+      }
+    }
+    if (key === "expand") {
+      $explorer.emit("expand", node.key);
     }
   };
   const onAction = (action: string, node: IResource) => {
     if (action === "delete") {
       $explorer.emit("delete", node.key);
+      $explorer.emit("unselect", node.key);
+      $buffer.emit("blur", node.label);
     }
   };
   const onSelect = (key: string) => {

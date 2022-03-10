@@ -15,9 +15,9 @@ const ExplorerWindow = defineComponent({
     $explorer.memory("ready");
     const {
       tree,
-      getTreeNode,
       init: initTree,
       release: releaseTree,
+      getTreeNode,
     } = useTree(
       $explorer as IEventEmitter<ITreeEventInfo<IResource & ITreeNode>>,
       {
@@ -26,10 +26,16 @@ const ExplorerWindow = defineComponent({
         children: [],
       }
     );
-    const { getContextmenu, actions, init, release } = useExplorer(
-      $explorer as IEventEmitter<IExplorerEventInfo>
-    );
-    const selectedKeys = ref<string[]>([]);
+    const {
+      getContextmenu,
+      actions,
+      init,
+      release,
+      expandKeys,
+      onExpand,
+      selectedKeys,
+      onSelect,
+    } = useExplorer($explorer as IEventEmitter<IExplorerEventInfo>);
     const contextmenu = ref<IDropdownItem[]>([]);
     const currentContextMenuNode = ref<IResource | null>(null);
     const showContextMenu = ref(false);
@@ -42,20 +48,22 @@ const ExplorerWindow = defineComponent({
       release();
       releaseTree();
     });
+    const onRawSelect = (keys: string[]) => {
+      const key = keys[0];
+      const node = getTreeNode(key);
+      if (!node.children) {
+        onSelect([key]);
+      }
+    };
     return () => {
       return (
         <>
           <Tree
             data={[tree]}
-            selectedKeys={selectedKeys.value}
-            onSelect={(value) => {
-              selectedKeys.value = value.filter((val) => {
-                return !getTreeNode(val).children;
-              });
-              if (selectedKeys.value.length) {
-                $explorer.emit("select", selectedKeys.value[0]);
-              }
-            }}
+            selectedKeys={selectedKeys}
+            expandKeys={expandKeys}
+            onExpand={onExpand}
+            onSelect={onRawSelect}
             onUpdate={(node) => {
               $explorer.emit("upgrade", node);
             }}
