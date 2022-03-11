@@ -5,6 +5,16 @@
   border-radius: var(--border-radus);
   width: 100%;
   align-items: center;
+  input {
+    background-color: transparent;
+    outline: none;
+    background-color: unset;
+    border: unset;
+    color: unset;
+  }
+  input:focus {
+    outline: none;
+  }
 }
 .input {
   height: var(--line-height);

@@ -10,6 +10,7 @@ import { IExplorerEventInfo } from "./types/IExplorerEventEmitter";
 import { IResource } from "./types/IResource";
 export const installExplorer = () => {
   const $buffer = useEventEmitter<IBufferEventInfo>(TOKEN_BUFFER_EMITTER);
+  $buffer.memory("ready");
   const { getBuffer, init, release } = useBuffer($buffer);
   const $explorer = useEventEmitter<
     IExplorerEventInfo & ITreeEventInfo<IResource>
@@ -69,6 +70,7 @@ export const installExplorer = () => {
     editKey.value = "";
   };
   const onEditComplete = (node: IResource, value: string) => {
+    $buffer.emit("rename", node.label, value || node.label);
     node.label = value || node.label;
     $explorer.emit("unedit");
     if (!node.children) {

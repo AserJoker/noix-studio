@@ -60,9 +60,7 @@ export const useEventEmitter = <
       release(event, wrapper as T[E]);
       return res;
     };
-    const cbs = callbacks[event as string] || [];
-    cbs.push(wrapper);
-    callbacks[event as string] = cbs;
+    on(event, wrapper as T[E]);
   };
   const memory = <E extends keyof T>(event: E) => {
     if (!memoryEvents.includes(event)) {

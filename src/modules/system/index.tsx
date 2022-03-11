@@ -6,12 +6,15 @@ import { installExplorer } from "./explorer";
 import { installMenu } from "./menu";
 import { installNewTemplateProejctWindow } from "./windows/new-template-project";
 import { installWorkbranchWindow } from "./windows/workbranch";
+import { installWorkbranch } from "./workbranch";
+import { installToolbarWindow } from "./windows/toolbar";
 
 const installWindow = () => {
   installConsoleWindow();
   installExplorerWindow();
   installWorkbranchWindow();
   installCodeWindow();
+  installToolbarWindow();
   installNewTemplateProejctWindow();
 };
 const system = {
@@ -20,6 +23,7 @@ const system = {
     installConsole();
     installExplorer();
     installMenu();
+    installWorkbranch();
   },
 };
 export default system;

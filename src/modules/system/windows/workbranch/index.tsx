@@ -1,31 +1,31 @@
-import { TOKEN_BUFFER_EMITTER } from "@/const";
+import { TOKEN_WORKBRANCH_EMITTER } from "@/const";
 import { useEventEmitter, useWindow } from "@/service";
-import { IBuffer } from "@/types";
-import { IBufferEventInfo } from "@/types/IBufferEventEmitter";
-import { IEditor } from "@/types/IEditor";
-import { defineComponent, onMounted, onUnmounted, ref } from "vue";
+import { defineComponent, onMounted, onUnmounted } from "vue";
+import { useWorkbranch } from "../../service/workbranch";
+import { IWorkbranchEventInfo } from "../../types/IWorkbranchEventEmittor";
+import style from "./index.module.scss";
 
 const WorkbranchWindow = defineComponent({
   setup() {
-    const $buffer = useEventEmitter<IBufferEventInfo>(TOKEN_BUFFER_EMITTER);
-    const current = ref<string | null>(null);
-    const currentBuf = ref<IBuffer | null>(null);
-    const editor = ref<IEditor | null>(null);
-    const onBufferFocus = (name: string, buf: IBuffer) => {
-      current.value = name;
-      currentBuf.value = buf;
-    };
+    const $workbranch = useEventEmitter<IWorkbranchEventInfo>(
+      TOKEN_WORKBRANCH_EMITTER
+    );
+    const { init, release, buf, editor } = useWorkbranch($workbranch);
     onMounted(() => {
-      $buffer.on("focus", onBufferFocus);
+      init();
     });
     onUnmounted(() => {
-      $buffer.release("focus", onBufferFocus);
+      release();
     });
     return () => {
       return (
-        <div>
-          <div>{current.value || "workbranch"}</div>
-          <div>{editor.value && editor.value.render()}</div>
+        <div class={style.container}>
+          <div class={style.header}>
+            {(buf.value && buf.value.name) || "no buffer"}
+          </div>
+          <div class={style.body}>
+            {buf.value && editor.value && editor.value.render(buf.value)}
+          </div>
         </div>
       );
     };

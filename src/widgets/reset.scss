@@ -1,25 +1,13 @@
-* {
-  background-color: transparent;
-}
-button {
+.button {
   background-color: transparent;
   border: unset;
   cursor: pointer;
   color: unset;
 }
-button:focus {
+.button:focus {
   outline: none;
 }
 
-input {
-  outline: none;
-  background-color: unset;
-  border: unset;
-  color: unset;
-}
-input:focus {
-  outline: none;
-}
 body {
   font-size: var(--font-size-m);
   line-height: var(--line-height-m);

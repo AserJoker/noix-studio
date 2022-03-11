@@ -4,7 +4,6 @@ import Input from "@/widgets/input";
 import { reactive, ref, VNodeChild } from "vue";
 import { IExplorerEventInfo } from "../types/IExplorerEventEmitter";
 import { IResource } from "../types/IResource";
-import { CheckOutlined } from "@vicons/antd";
 
 export const useExplorer = (emitter: IEventEmitter<IExplorerEventInfo>) => {
   const contextmenuItems: {
@@ -101,17 +100,8 @@ export const useExplorer = (emitter: IEventEmitter<IExplorerEventInfo>) => {
             onUpdate:value={(val) => (editValue.value = val)}
             autofocus
             type="baseline"
-            suffix={() => {
-              return (
-                <div
-                  class="icon"
-                  onClick={() => {
-                    emitter.emit("editComplete", node, editValue.value);
-                  }}
-                >
-                  <CheckOutlined />
-                </div>
-              );
+            onBlur={() => {
+              emitter.emit("editComplete", node, editValue.value);
             }}
           />
         </div>

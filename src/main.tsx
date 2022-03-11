@@ -1,10 +1,11 @@
 import { createApp, defineComponent, onMounted, ref } from "vue";
 import Application from "./components/Application";
+import NoixWidget from "./widgets";
 import "./global.scss";
 import "./widgets/reset.scss";
 import "//at.alicdn.com/t/font_3209065_7pwi96badis.js";
 const modulePaths = import.meta.glob("./modules/*/index.*");
-createApp(
+const app = createApp(
   defineComponent(() => {
     const modules = ref<{ install: () => void }[]>([]);
     onMounted(() => {
@@ -24,7 +25,10 @@ createApp(
       );
     };
   })
-).mount("#app");
+);
+app.use(NoixWidget);
+app.mount("#app");
+
 document.body.oncontextmenu = (e) => {
   e.preventDefault();
 };

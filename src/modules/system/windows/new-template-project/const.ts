@@ -1,6 +1,7 @@
 import { IView } from "@/types";
 import { TOKEN_CONSOLE_WINDOW } from "../console";
 import { TOKEN_EXPLORER_WINDOW } from "../explorer";
+import { TOKEN_TOOLBAR_WINDOW } from "../toolbar";
 import { TOKEN_WORKBRANCH_WINDOW } from "../workbranch";
 
 export const view: IView = {
@@ -27,9 +28,23 @@ export const view: IView = {
           classname: [TOKEN_CONSOLE_WINDOW],
         },
         {
-          type: "window",
-          key: "workbranch",
-          classname: [TOKEN_WORKBRANCH_WINDOW],
+          type: "group",
+          key: "editor",
+          direction: "row",
+          split: "240px",
+          reverse: true,
+          children: [
+            {
+              type: "window",
+              key: "toolbar",
+              classname: [TOKEN_TOOLBAR_WINDOW],
+            },
+            {
+              type: "window",
+              key: "workbranch",
+              classname: [TOKEN_WORKBRANCH_WINDOW],
+            },
+          ],
         },
       ],
     },
