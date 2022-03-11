@@ -35,6 +35,7 @@ const ExplorerWindow = defineComponent({
       onExpand,
       selectedKeys,
       onSelect,
+      renderLabel,
     } = useExplorer($explorer as IEventEmitter<IExplorerEventInfo>);
     const contextmenu = ref<IDropdownItem[]>([]);
     const currentContextMenuNode = ref<IResource | null>(null);
@@ -52,7 +53,7 @@ const ExplorerWindow = defineComponent({
       const key = keys[0];
       const node = getTreeNode(key);
       if (!node.children) {
-        onSelect([key]);
+        onSelect([key], [node]);
       }
     };
     return () => {
@@ -82,6 +83,7 @@ const ExplorerWindow = defineComponent({
               e.preventDefault();
             }}
             actions={actions}
+            label={renderLabel}
           />
           <Dropdown
             dataSource={contextmenu.value}

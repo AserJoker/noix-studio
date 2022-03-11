@@ -3,4 +3,5 @@ export interface IBuffer {
   cursor: { line: number; pos: number };
   readonly?: boolean;
   name: string;
+  type: string;
 }

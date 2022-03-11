@@ -3,7 +3,7 @@ import { VNodeChild } from "vue";
 import { IResource } from "./IResource";
 
 export type IExplorerEventInfo = {
-  select: (key: string) => void;
+  select: (key: string, node: IResource) => void;
   unselect: (key: string) => void;
   contextmenu: (menukey: string, node: IResource) => void;
   action: (action: string, node: IResource) => void;
@@ -18,4 +18,7 @@ export type IExplorerEventInfo = {
   ready: () => void;
   expand: (key: string) => void;
   unexpand: (key: string) => void;
+  edit: (key: string, node: IResource) => void;
+  unedit: () => void;
+  editComplete: (node: IResource, value: string) => void;
 };

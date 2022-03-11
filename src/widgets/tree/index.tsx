@@ -105,7 +105,9 @@ const Tree = defineComponent({
             class={
               _selectedKeys.includes(node.key) ? style.selectedItem : style.item
             }
-            style={{ paddingLeft: `${depth * 16}px` }}
+            style={{
+              paddingLeft: `${depth * 16 + (node.children ? 0 : 24)}px`,
+            }}
             onClick={(e) => onClickNode(node, e)}
             onContextmenu={(e) => {
               emit("contextmenu", node, e);
@@ -128,7 +130,7 @@ const Tree = defineComponent({
                 {(props.prefix && props.prefix(node)) ||
                   (node.prefix && node.prefix(node))}
               </div>
-              <div>
+              <div class={style.nodeLabel}>
                 {(props.label && props.label(node)) || renderLabel(node)}
               </div>
             </div>

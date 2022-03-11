@@ -4,6 +4,7 @@
   border: 1px solid var(--border-color);
   border-radius: var(--border-radus);
   width: 100%;
+  align-items: center;
 }
 .input {
   height: var(--line-height);
@@ -14,5 +15,13 @@
 .focus {
   border-color: var(--border-color-focus);
 }
-
+.baseline {
+  border-right: none;
+  border-top: none;
+  border-left: none;
+  border-radius: 0;
+  input {
+    padding: 0;
+  }
+}
 @import url("../common.scss");

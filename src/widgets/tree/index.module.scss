@@ -1,6 +1,8 @@
 .treenode {
   cursor: pointer;
   user-select: none;
+  width: fit-content;
+  min-width: 100%;
 }
 .item {
   display: flex;
@@ -58,4 +60,7 @@
   --n-height: fit-content !important;
   --n-padding-left: 8px !important;
   --n-padding-right: 8px !important;
+}
+.nodeLabel {
+  white-space: nowrap;
 }

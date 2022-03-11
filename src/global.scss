@@ -8,6 +8,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  user-select: none;
 }
 .icon {
   display: flex;
@@ -33,7 +34,7 @@ body {
 
   --font-color-default: rgb(98, 96, 102);
   --font-color-second: #c9ccd2;
-  --font-color-highlight:#ffffff;
+  --font-color-highlight: #ffffff;
   --font-color: var(--font-color-default);
 
   --border-color-default: rgb(229, 231, 235);
