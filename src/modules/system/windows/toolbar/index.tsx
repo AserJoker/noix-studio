@@ -41,7 +41,9 @@ const ToolbarWindow = defineComponent({
       },
       {
         key: "button",
-        props: {},
+        props: {
+          style: { width: "100%" },
+        },
         render: () => {
           return (
             <button

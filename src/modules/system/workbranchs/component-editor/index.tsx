@@ -18,6 +18,7 @@ interface IResolvedNode {
   name: string;
   children: IResolvedNode[];
   props: Record<string, unknown>;
+  parent?: IResolvedNode;
 }
 const ComponentEditorWorkbranch = defineComponent({
   props: {
@@ -70,15 +71,12 @@ const ComponentEditorWorkbranch = defineComponent({
       }
       const children = [
         ...node.children.map((c) => renderDom(c)),
-        h("div", { class: style.content }),
-      ];
-      return (
-        <div
-          class={style.wrapper}
-          onDragover={(e) => {
+        h("div", {
+          class: style.content,
+          onDragover: (e: DragEvent) => {
             e.preventDefault();
-          }}
-          onDrop={(e) => {
+          },
+          onDrop: (e: DragEvent) => {
             const dom = e.dataTransfer?.getData("comp");
             const props = JSON.parse(e.dataTransfer?.getData("props") || "{}");
             if (dom) {
@@ -86,12 +84,39 @@ const ComponentEditorWorkbranch = defineComponent({
                 name: dom,
                 props,
                 children: [],
+                parent: node,
               });
             }
             e.stopPropagation();
-          }}
-        >
-          {h(node.name, node.props, children)}
+          },
+        }),
+      ];
+      return (
+        <div class={style.wrapper}>
+          <div class={style.headerbar}>
+            <div>{node.name}</div>
+            <div class={style.actionbar}>
+              <button>edit</button>
+              {node.parent && (
+                <button
+                  onClick={() => {
+                    const parent = node.parent;
+                    if (parent) {
+                      const index = parent.children.findIndex(
+                        (c) => c === node
+                      );
+                      if (index !== -1) {
+                        parent.children.splice(index, 1);
+                      }
+                    }
+                  }}
+                >
+                  remove
+                </button>
+              )}
+            </div>
+          </div>
+          <div class={style.body}>{h(node.name, node.props, children)}</div>
         </div>
       );
     };

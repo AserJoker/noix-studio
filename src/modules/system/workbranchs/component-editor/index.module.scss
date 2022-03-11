@@ -24,5 +24,17 @@
   border: 1px #000;
   border-style: dashed;
   height: 20px;
-  background-color: #eee;
+  background-color: var(--background-hover);
+}
+.headerbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.actionbar {
+  height: 24px;
+  display: flex;
+}
+.body {
+  border: 1px solid #000;
 }
